@@ -1,0 +1,211 @@
+[
+  {
+    "id": "assertion-refund-window-current",
+    "query": "what is our refund window?",
+    "intent": "current",
+    "state": "ANSWERED",
+    "claim": "Customers may request a full refund within 30 days of purchase.",
+    "source": {
+      "source_object": "policy/refunds",
+      "source_version": "v5",
+      "source_span": "S5:L12-L14",
+      "authority_rule": "signed-policy-owner-verified"
+    },
+    "valid_from": "2026-03-11",
+    "valid_to": null,
+    "recorded_at": "2026-03-11T09:20:00Z",
+    "superseded_at": null,
+    "trust_vector": { "authority": 0.98, "freshness": 0.95, "corroboration": 0.80 },
+    "corroborating_sources": 2,
+    "warranty_label": "Verified by J. Perera (policy owner), March 2026, two corroborating sources.",
+    "acl_scope": "all-employees",
+    "conflict": null,
+    "gap_ticket": null,
+    "owner_route": "j.perera"
+  },
+  {
+    "id": "assertion-refund-window-historical",
+    "query": "what did our refund window say on February 14?",
+    "intent": "as_of",
+    "as_of": "2026-02-14",
+    "state": "ANSWERED",
+    "claim": "Customers may request a full refund within 14 days of purchase.",
+    "source": {
+      "source_object": "policy/refunds",
+      "source_version": "v3",
+      "source_span": "S3:L10-L11",
+      "authority_rule": "signed-policy"
+    },
+    "valid_from": "2025-08-01",
+    "valid_to": "2026-03-11",
+    "recorded_at": "2025-08-01T14:03:00Z",
+    "superseded_at": "2026-05-12T16:41:00Z",
+    "trust_vector": { "authority": 0.97, "freshness": 0.40, "corroboration": 0.60 },
+    "corroborating_sources": 1,
+    "warranty_label": "As of 2026-02-14: policy v3, superseded 2026-05-12.",
+    "acl_scope": "all-employees",
+    "conflict": null,
+    "gap_ticket": null,
+    "owner_route": "j.perera"
+  },
+  {
+    "id": "conflict-refund-window-emea",
+    "query": "what is the refund window for EMEA orders?",
+    "intent": "current",
+    "state": "NEEDS_RESOLUTION",
+    "claim": null,
+    "conflict": {
+      "conflict_id": "conf-0007",
+      "materiality": "high",
+      "claim_a": {
+        "text": "EMEA orders follow the standard 30-day refund window.",
+        "source_object": "policy/refunds",
+        "source_version": "v5",
+        "authority": 0.98,
+        "recorded_at": "2026-03-11T09:20:00Z"
+      },
+      "claim_b": {
+        "text": "EMEA orders are subject to a 14-day statutory refund window.",
+        "source_object": "legal/emea-consumer-terms",
+        "source_version": "v2",
+        "authority": 0.96,
+        "recorded_at": "2026-06-02T11:00:00Z"
+      },
+      "reconciling_owner": "legal.desk"
+    },
+    "trust_vector": { "authority": 0.97, "freshness": 0.88, "corroboration": 0.10 },
+    "warranty_label": "Unresolved: two high-authority sources disagree. Owner pinged 2026-07-18.",
+    "acl_scope": "all-employees",
+    "gap_ticket": "gap-0031",
+    "owner_route": "legal.desk"
+  },
+  {
+    "id": "gap-soc2-evidence-process",
+    "query": "what is our SOC 2 evidence collection process?",
+    "intent": "current",
+    "state": "BEST_AVAILABLE",
+    "claim": "Evidence is collected quarterly into the shared audit drive; see the 2025 runbook.",
+    "source": {
+      "source_object": "compliance/soc2-runbook",
+      "source_version": "v1",
+      "source_span": "S1:L44-L52",
+      "authority_rule": "unverified-doc"
+    },
+    "valid_from": "2025-05-01",
+    "valid_to": null,
+    "recorded_at": "2025-05-01T10:00:00Z",
+    "superseded_at": null,
+    "trust_vector": { "authority": 0.45, "freshness": 0.18, "corroboration": 0.20 },
+    "corroborating_sources": 0,
+    "warranty_label": "Best available, 14 months old, contradicts #compliance thread (2026-06-03). Owner pinged.",
+    "acl_scope": "compliance,security",
+    "conflict": null,
+    "gap_ticket": {
+      "gap_ticket_id": "gap-0019",
+      "demand_count": 9,
+      "window": "trailing-30-days",
+      "routed_to": "s.fernando",
+      "status": "open",
+      "summary": "9 people asked about the SOC 2 evidence process; best source is 14 months old and conflicts with the June 3 #compliance thread."
+    },
+    "owner_route": "s.fernando"
+  },
+  {
+    "id": "assertion-expense-policy-stale",
+    "query": "what is the per-diem meal cap for travel?",
+    "intent": "current",
+    "state": "BEST_AVAILABLE",
+    "claim": "The per-diem meal cap is USD 60 per day for domestic travel.",
+    "source": {
+      "source_object": "policy/expenses",
+      "source_version": "v2",
+      "source_span": "S2:L20-L21",
+      "authority_rule": "signed-policy"
+    },
+    "valid_from": "2023-01-01",
+    "valid_to": null,
+    "recorded_at": "2023-01-01T08:00:00Z",
+    "superseded_at": null,
+    "trust_vector": { "authority": 0.90, "freshness": 0.12, "corroboration": 0.30 },
+    "corroborating_sources": 1,
+    "warranty_label": "Best available, 3+ years old, past its decay clock for finance policy. Freshness low.",
+    "acl_scope": "all-employees",
+    "conflict": null,
+    "gap_ticket": null,
+    "owner_route": "finance.ops"
+  },
+  {
+    "id": "assertion-pto-carryover-thread-capture",
+    "query": "how much PTO can I carry over into the next year?",
+    "intent": "current",
+    "state": "ANSWERED",
+    "claim": "Up to 5 unused PTO days carry over; the rest expire on December 31.",
+    "source": {
+      "source_object": "slack/#people-ops/thread-8842",
+      "source_version": "capture-1",
+      "source_span": "msg-8842-3",
+      "authority_rule": "owner-approved-thread-capture"
+    },
+    "valid_from": "2026-01-15",
+    "valid_to": null,
+    "recorded_at": "2026-01-15T13:12:00Z",
+    "superseded_at": null,
+    "trust_vector": { "authority": 0.85, "freshness": 0.92, "corroboration": 0.50 },
+    "corroborating_sources": 1,
+    "warranty_label": "Captured from #people-ops thread, approved by R. Silva (HR), January 2026.",
+    "acl_scope": "all-employees",
+    "conflict": null,
+    "gap_ticket": null,
+    "provenance_note": "Drafted from a Slack thread that resolved what search missed; author credited, approved before entering corpus.",
+    "owner_route": "r.silva"
+  },
+  {
+    "id": "assertion-api-rate-limit-fresh",
+    "query": "what is the default API rate limit per tenant?",
+    "intent": "current",
+    "state": "ANSWERED",
+    "claim": "The default API rate limit is 600 requests per minute per tenant.",
+    "source": {
+      "source_object": "eng/api-reference",
+      "source_version": "v41",
+      "source_span": "S41:L88-L90",
+      "authority_rule": "owner-verified"
+    },
+    "valid_from": "2026-07-01",
+    "valid_to": null,
+    "recorded_at": "2026-07-01T00:00:00Z",
+    "superseded_at": null,
+    "trust_vector": { "authority": 0.93, "freshness": 0.99, "corroboration": 0.75 },
+    "corroborating_sources": 2,
+    "warranty_label": "Verified, current release. API reference decays every release; last confirmed 2026-07-01.",
+    "acl_scope": "engineering",
+    "conflict": null,
+    "gap_ticket": null,
+    "owner_route": "platform.eng"
+  },
+  {
+    "id": "assertion-oncall-escalation-changed-since",
+    "query": "what changed in the on-call escalation path since the March audit?",
+    "intent": "changed_since",
+    "changed_since": "2026-03-01",
+    "state": "ANSWERED",
+    "claim": "Primary on-call now pages the platform lead after 10 minutes (was 15); secondary path unchanged.",
+    "source": {
+      "source_object": "eng/oncall-runbook",
+      "source_version": "v9",
+      "source_span": "S9:L30-L34",
+      "authority_rule": "owner-verified"
+    },
+    "valid_from": "2026-04-20",
+    "valid_to": null,
+    "recorded_at": "2026-04-20T17:45:00Z",
+    "superseded_at": null,
+    "trust_vector": { "authority": 0.94, "freshness": 0.90, "corroboration": 0.66 },
+    "corroborating_sources": 1,
+    "warranty_label": "Change recorded 2026-04-20, replaces the 15-minute threshold from runbook v8.",
+    "acl_scope": "engineering",
+    "conflict": null,
+    "gap_ticket": null,
+    "owner_route": "platform.eng"
+  }
+]
