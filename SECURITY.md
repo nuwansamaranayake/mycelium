@@ -35,3 +35,9 @@ No provider SDK is called directly; all model access goes through the groundwork
 `OPENROUTER_API_KEY` from the environment. Secrets live in `.env` (git-ignored); `.env.example` ships
 with blank keys, and the synthetic demo runs with no keys at all. Never commit a populated `.env`,
 and never place corpus content or personal data in URL parameters or logs.
+
+## Reporting a vulnerability
+
+Report suspected vulnerabilities privately to **nuwans@hotmail.com**. Do not open a public issue.
+You will receive an acknowledgment within 72 hours. Please allow time to investigate and ship a fix
+before any public disclosure; a coordinated disclosure timeline will be agreed with you.

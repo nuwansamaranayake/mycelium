@@ -26,6 +26,16 @@
 5. Refuse to average two high-authority sources that materially conflict; surface both and open a
    ticket to reconcile.
 
+## Novelty (scoped)
+
+As of July 2026, the open and commercial internal-search tools we surveyed (including Glean, Onyx,
+Dust, and the broader RAG-platform wave) treat the corpus as a read-only input: they compete on
+connector count and retrieval quality, and leave corpus health to someone else. Across that field we
+found no tool where the query stream maintains the corpus, answers carry evidence-backed warranty
+labels with as-of history, and material conflicts between high-authority sources refuse to
+self-resolve. That inversion is Mycelium's bet. This is a scoped claim about the field we reviewed in
+July 2026, not a claim of universal priority.
+
 ## Non-goals
 
 - **Not a wiki editor or CMS.** Mycelium maintains the corpus through the query stream and approval
