@@ -1,0 +1,3 @@
+The on-call rotation is weekly, Monday to Monday. The primary carries the pager; the secondary answers within 30 minutes.
+
+Escalate to the engineering manager after two unacknowledged pages. Handover notes are written before Monday stand-up.
