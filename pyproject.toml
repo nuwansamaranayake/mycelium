@@ -21,10 +21,14 @@ dependencies = [
     "redis",
     "httpx",
     "aignite-groundwork @ git+https://github.com/nuwansamaranayake/groundwork@v0.1.1",
-    "sentence-transformers",
     "rank-bm25",
     "boto3",
 ]
+
+# sentence-transformers (and its CUDA torch) is deliberately NOT declared: no Phase 1
+# code imports it. Embeddings go through app/engine/embedding.py (deterministic
+# HashingEmbedder, or OpenRouterEmbedder over HTTP). Re-add it in the phase that
+# actually imports it (e.g. a local NLI cross-encoder), not before.
 
 [project.optional-dependencies]
 dev = ["pytest", "ruff"]

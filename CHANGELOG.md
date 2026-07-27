@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.2.0] - 2026-07-23
 
+### Removed
+- Unused `sentence-transformers` dependency (and the CUDA torch stack it pulled). No Phase 1
+  code imports it; production images drop from ~5.7 GB toward the ~0.5 GB baseline
+  (FAILURES FAIL-0010).
+
 ### Security
 - Adversarial review wave (15 confirmed findings, MYC-001..015) fixed before release:
   - `GET /api/v1/answers/{id}` is no longer unauthenticated: read-back requires the
