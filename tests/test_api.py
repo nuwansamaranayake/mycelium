@@ -15,7 +15,7 @@ DOC = {
 
 
 @pytest.fixture()
-def client():
+def client(monkeypatch):
     engine = sa.create_engine(
         "sqlite://",
         poolclass=sa.pool.StaticPool,
@@ -23,6 +23,10 @@ def client():
     )
     db.metadata.create_all(engine)
     db.set_engine_for_tests(engine)
+    # hermetic: ambient SMOKE_TEST_TOKEN (e.g. exported for the gate's live smoke) must not
+    # flip auth on for in-process tests; the auth test sets it explicitly
+    from app.config import settings
+    monkeypatch.setattr(settings, "smoke_test_token", "")
     return TestClient(app)
 
 

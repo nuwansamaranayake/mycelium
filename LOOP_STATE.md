@@ -17,7 +17,7 @@ LLM answer-synthesis stage through the groundwork gateway.
 - [x] M6 key-gated eval_llm observed: citation coverage 1.00, grounding validity 1.00
 - [x] M7 CI eval job flipped to "eval (required)" + docs truth pass (README, contracts.md,
       CHANGELOG, EVAL.md status, FAILURES.md FAIL-0004/0005/0006)
-- [ ] FINAL gate.py GATE OK + check_migrations MIGRATION OK + prod-guard + byte-reproducibility
+- [x] FINAL gate.py GATE OK + check_migrations MIGRATION OK + prod-guard + byte-reproducibility
 
 ## DECISION
 
@@ -39,4 +39,10 @@ LLM answer-synthesis stage through the groundwork gateway.
 
 ## Next
 
-M2: engine modules with tests.
+GATES_PASSED. All FINAL gates observed on 2026-07-27:
+- `scripts/gate.py`: GATE ruff PASS, pytest PASS (19), smoke PASS, eval PASS, `GATE OK`, exit 0
+- `scripts/check_migrations.py`: `MIGRATION OK: 9 tables` (Postgres 16 on 55433)
+- prod-guard (`APP_ENV=production`, port 8151): `/api/v1/demo` 503, `/health` 200
+- byte-reproducibility: two consecutive `scripts/eval.py` runs, `cmp` identical
+Phase 1 core loop is complete on branch `phase-1`; next phase of work is Phase 2 of the
+blueprint MVP path (telemetry scoring, gap tickets, owner routing, approval-gated patches).

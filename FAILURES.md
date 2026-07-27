@@ -109,3 +109,20 @@ the *diagnosed* root cause separately (Standard 5).
   aware). The guard in `freshness()` stays: naive input anywhere else is still a bug.
 - **Doctrine link**: Standard 3 (fail loud beats silently-wrong labels) and the portfolio
   thesis — deterministic code checks its inputs instead of trusting the pipe.
+
+## FAIL-0007 — The gate's own environment flipped auth on and 6 API tests turned red
+
+- **Date**: 2026-07-27
+- **Surface**: `scripts/gate.py` final run (pytest step)
+- **Reported symptom**: pytest green standalone, but 6 `tests/test_api.py` failures inside the
+  gate (401s where tests expected 201/422/503).
+- **Diagnosed cause**: the gate is run with `SMOKE_TEST_TOKEN=dev` exported for its live smoke
+  step; the in-process TestClient reads the same `settings`, so ambient environment silently
+  enabled bearer auth for tests that send no auth header.
+- **Root cause**: test hermeticity — the suite depended on ambient env instead of pinning the
+  auth state it assumes.
+- **Fix**: the client fixture now forces `smoke_test_token = ""` via monkeypatch; the one test
+  that asserts auth behavior sets the token explicitly. Gate re-run: `GATE OK`.
+- **Doctrine link**: Standard 1 (the defect was in the tests' assumptions, not the auth code —
+  fix named at the root) and the gate exists precisely to run checks the way CI and operators
+  will, not the way a developer's shell happens to be configured.
