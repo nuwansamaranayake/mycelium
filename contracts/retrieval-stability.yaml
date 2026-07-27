@@ -1,0 +1,27 @@
+# Seismograph behavioral contract for Mycelium's hybrid retrieval stage.
+# Lives in this repo (contracts version with the pipeline they protect) and validates
+# against Seismograph's contract DSL. Executed today by scripts/eval.py (deterministic
+# embedder, pre-authored paraphrases) and scripts/eval_llm.py (key-gated synthesis
+# citation coverage); execution via Seismograph's own runner arrives with its Phase 2
+# HTTP SUT adapter.
+contract: mycelium-retrieval-stability
+subject: hybrid-retriever
+invariants:
+  # The set of documents retrieval asserts as relevant must survive a paraphrase of the
+  # query. Compared on doc ids, not passage ranks: rank order within a document may vary.
+  - field: retrieved_doc_ids
+    under: [paraphrase, repeat_run]
+    relation: jaccard_at_least
+    threshold: 0.6
+allowed_variation:
+  - field: passage_rank_order
+    rule: rank_fusion_tie_break_on_passage_id
+run_policy: {samples: 3, configs: 1, confidence: 0.9}
+gate: {max_decision_flip_rate: 0.4}
+probes:
+  - id: query-refund-window
+    input: What is our refund window?
+  - id: query-expense-report
+    input: How do I submit an expense report?
+  - id: query-vpn-setup
+    input: How do I set up the VPN on my laptop?
