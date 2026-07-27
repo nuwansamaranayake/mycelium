@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-07-27
+
+### Eval
+- ACL leak count 0, citation validity 1.0, freshness correctness 1.0, retrieval stability
+  1.0 (>= 0.60). Byte-reproducible.
+
+### Changed
+- Unused `sentence-transformers` (CUDA torch) dropped; image 5.63 GB -> 435 MB.
+- `scripts/gate.py` enumerates routes and fails on any unguarded non-public route.
+
+No contract change: this repo's reads were already gated in v0.2.0.
+
 ## [0.2.0] - 2026-07-23
 
 ### Removed
