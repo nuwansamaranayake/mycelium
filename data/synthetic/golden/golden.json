@@ -1,0 +1,231 @@
+{
+  "comment": "Golden synthetic corpus for the deterministic keyless eval. reference_time is the staleness anchor: freshness labels are computed against it, never against wall-clock now. ACLs are planted so restricted-principal queries (expected_doc_ids empty, forbidden_doc_ids set) attempt to pull documents they may not see.",
+  "reference_time": "2026-07-01T00:00:00+00:00",
+  "documents": [
+    {
+      "doc_id": "doc-refund-policy",
+      "title": "Customer Refund Policy v4",
+      "timestamp": "2026-06-20T00:00:00+00:00",
+      "allowed_principals": ["*"],
+      "expected_freshness": "fresh",
+      "text": "Customers may request a full refund within 30 days of purchase. The refund window starts on the delivery date, not the order date.\n\nRefunds are issued to the original payment method within 5 business days of approval. Store credit is available as an alternative on request.\n\nDigital goods follow the same 30 day refund window unless the license key has been activated."
+    },
+    {
+      "doc_id": "doc-expense-policy",
+      "title": "Expense Reporting Policy",
+      "timestamp": "2026-03-10T00:00:00+00:00",
+      "allowed_principals": ["*"],
+      "expected_freshness": "aging",
+      "text": "Submit expense reports through the finance portal within 14 days of the spend. Attach itemized receipts for every line over 25 dollars.\n\nPer diem for travel is 60 dollars per day domestic and 90 dollars international. Alcohol is never reimbursable.\n\nManagers approve reports up to 2000 dollars; anything larger routes to the finance director."
+    },
+    {
+      "doc_id": "doc-security-runbook",
+      "title": "Incident Response Runbook",
+      "timestamp": "2025-08-01T00:00:00+00:00",
+      "allowed_principals": ["bob"],
+      "expected_freshness": "stale",
+      "text": "On a suspected security incident, page the on-call responder and open a war room channel. Triage severity within 15 minutes.\n\nContain first: isolate affected hosts, rotate exposed credentials, and preserve forensic images before any remediation.\n\nPostmortems are blameless and due within 5 business days of incident close."
+    },
+    {
+      "doc_id": "doc-payroll-calendar",
+      "title": "Payroll Calendar and Salary Schedule",
+      "timestamp": "2026-06-05T00:00:00+00:00",
+      "allowed_principals": ["harriet"],
+      "expected_freshness": "fresh",
+      "text": "Payroll runs on the 25th of each month. When the 25th falls on a weekend, salary payment moves to the preceding Friday.\n\nContractor invoices are paid on the 10th and the 25th. Off-cycle salary corrections require CFO sign-off.\n\nThe salary payment schedule for the December close is one week early, on the 18th."
+    },
+    {
+      "doc_id": "doc-vpn-setup",
+      "title": "VPN Setup Guide",
+      "timestamp": "2026-01-15T00:00:00+00:00",
+      "allowed_principals": ["*"],
+      "expected_freshness": "aging",
+      "text": "Install the WireGuard client from the software portal, then import the profile named corp-vpn from the device management console.\n\nAuthenticate with your SSO account and approve the push notification. The VPN connects automatically on untrusted networks.\n\nIf the laptop cannot reach internal DNS after connecting, toggle the profile off and on, then contact the helpdesk."
+    },
+    {
+      "doc_id": "doc-api-auth",
+      "title": "Internal API Authentication Reference",
+      "timestamp": "2026-06-10T00:00:00+00:00",
+      "allowed_principals": ["eve"],
+      "expected_freshness": "fresh",
+      "text": "Services authenticate to the internal API with short-lived OAuth client credentials issued by the identity broker. Tokens expire after 15 minutes.\n\nRequest scopes narrowly: one scope per resource family. Wildcard scopes are rejected at the gateway.\n\nRotate client secrets quarterly. Static API keys are deprecated and refused since March."
+    },
+    {
+      "doc_id": "doc-onboarding",
+      "title": "New Hire Onboarding Checklist",
+      "timestamp": "2025-11-20T00:00:00+00:00",
+      "allowed_principals": ["*"],
+      "expected_freshness": "stale",
+      "text": "Before day one: sign the offer, complete background check, and ship the laptop to the new hire address.\n\nWeek one: account provisioning, security training, meet your onboarding buddy, and set up the development environment.\n\nDay 30: goals review with the manager and feedback survey on the onboarding checklist itself."
+    },
+    {
+      "doc_id": "doc-brand-guide",
+      "title": "Brand Guidelines",
+      "timestamp": "2026-04-02T00:00:00+00:00",
+      "allowed_principals": ["mona"],
+      "expected_freshness": "aging",
+      "text": "The primary brand colors are deep indigo 2E2A72 and signal orange FF6B35. Use indigo for backgrounds and orange only for accents.\n\nThe logo keeps a clear space equal to the height of the wordmark x-height. Never stretch, recolor, or outline the logo.\n\nTypography is Inter for product surfaces and Source Serif for long-form documents."
+    },
+    {
+      "doc_id": "doc-soc2-evidence",
+      "title": "SOC 2 Evidence Collection Process",
+      "timestamp": "2025-05-01T00:00:00+00:00",
+      "allowed_principals": ["bob", "carol"],
+      "expected_freshness": "stale",
+      "text": "SOC 2 evidence is collected quarterly: access reviews, change management samples, and backup restore proofs go into the compliance vault.\n\nEach control owner uploads evidence within 10 days of quarter close. The compliance lead samples 10 percent for spot checks.\n\nAuditor requests route through the compliance lead only; never send evidence directly to the auditor."
+    },
+    {
+      "doc_id": "doc-holiday-schedule",
+      "title": "Company Holiday Schedule 2026",
+      "timestamp": "2026-06-28T00:00:00+00:00",
+      "allowed_principals": ["*"],
+      "expected_freshness": "fresh",
+      "text": "The company observes 12 public holidays in 2026, listed on the intranet calendar. Offices close for a winter break from December 24 through January 1.\n\nRegional holidays follow the local calendar of each office. Remote employees follow the calendar of their contracting entity.\n\nOn-call coverage during company holidays earns a day in lieu."
+    }
+  ],
+  "queries": [
+    {
+      "query_id": "q-refund-alice",
+      "principal": "alice",
+      "query": "What is our refund window?",
+      "expected_doc_ids": ["doc-refund-policy"],
+      "forbidden_doc_ids": [],
+      "paraphrases": [
+        "How many days do customers have to request a refund?",
+        "What is the time limit for a customer refund?"
+      ]
+    },
+    {
+      "query_id": "q-expense-alice",
+      "principal": "alice",
+      "query": "How do I submit an expense report?",
+      "expected_doc_ids": ["doc-expense-policy"],
+      "forbidden_doc_ids": [],
+      "paraphrases": [
+        "Where do I file my expense reports and receipts?",
+        "What is the process for expense report submission?"
+      ]
+    },
+    {
+      "query_id": "q-vpn-alice",
+      "principal": "alice",
+      "query": "How do I set up the VPN on my laptop?",
+      "expected_doc_ids": ["doc-vpn-setup"],
+      "forbidden_doc_ids": [],
+      "paraphrases": [
+        "What are the steps to configure the corporate VPN?",
+        "VPN client installation and setup instructions"
+      ]
+    },
+    {
+      "query_id": "q-holiday-alice",
+      "principal": "alice",
+      "query": "When are the company holidays this year?",
+      "expected_doc_ids": ["doc-holiday-schedule"],
+      "forbidden_doc_ids": [],
+      "paraphrases": [
+        "Which public holidays does the company observe in 2026?",
+        "What is the holiday calendar for this year?"
+      ]
+    },
+    {
+      "query_id": "q-onboarding-alice",
+      "principal": "alice",
+      "query": "What is on the new hire onboarding checklist?",
+      "expected_doc_ids": ["doc-onboarding"],
+      "forbidden_doc_ids": [],
+      "paraphrases": [
+        "What happens during onboarding for a new hire?",
+        "New employee onboarding steps in the first week"
+      ]
+    },
+    {
+      "query_id": "q-incident-bob",
+      "principal": "bob",
+      "query": "What are the steps in the incident response runbook?",
+      "expected_doc_ids": ["doc-security-runbook"],
+      "forbidden_doc_ids": [],
+      "paraphrases": [
+        "How do we respond to a security incident?",
+        "Security incident triage and containment procedure"
+      ]
+    },
+    {
+      "query_id": "q-payroll-harriet",
+      "principal": "harriet",
+      "query": "When does payroll run each month?",
+      "expected_doc_ids": ["doc-payroll-calendar"],
+      "forbidden_doc_ids": [],
+      "paraphrases": [
+        "On which day of the month is salary paid?",
+        "What is the monthly payroll schedule?"
+      ]
+    },
+    {
+      "query_id": "q-api-eve",
+      "principal": "eve",
+      "query": "How do services authenticate to the internal API?",
+      "expected_doc_ids": ["doc-api-auth"],
+      "forbidden_doc_ids": [],
+      "paraphrases": [
+        "What auth mechanism does the internal API use?",
+        "Internal API token and OAuth client credential rules"
+      ]
+    },
+    {
+      "query_id": "q-soc2-bob",
+      "principal": "bob",
+      "query": "What is the SOC 2 evidence collection process?",
+      "expected_doc_ids": ["doc-soc2-evidence"],
+      "forbidden_doc_ids": [],
+      "paraphrases": [
+        "How do we collect and store SOC 2 audit evidence?",
+        "SOC 2 quarterly evidence upload procedure"
+      ]
+    },
+    {
+      "query_id": "q-brand-mona",
+      "principal": "mona",
+      "query": "What are the brand colors?",
+      "expected_doc_ids": ["doc-brand-guide"],
+      "forbidden_doc_ids": [],
+      "paraphrases": [
+        "Which colors does the brand guide allow?",
+        "Primary color palette in the brand guidelines"
+      ]
+    },
+    {
+      "query_id": "q-acl-payroll-alice",
+      "principal": "alice",
+      "query": "When does payroll run each month and what is the salary payment schedule?",
+      "expected_doc_ids": [],
+      "forbidden_doc_ids": ["doc-payroll-calendar"],
+      "paraphrases": [
+        "What day is salary paid and when does payroll close?",
+        "Monthly payroll run and salary payment dates"
+      ]
+    },
+    {
+      "query_id": "q-acl-incident-alice",
+      "principal": "alice",
+      "query": "What are the incident response runbook steps for a security incident?",
+      "expected_doc_ids": [],
+      "forbidden_doc_ids": ["doc-security-runbook"],
+      "paraphrases": [
+        "How does the security team contain an incident?",
+        "Incident response triage and war room procedure"
+      ]
+    },
+    {
+      "query_id": "q-acl-soc2-mona",
+      "principal": "mona",
+      "query": "How is SOC 2 evidence collected each quarter?",
+      "expected_doc_ids": [],
+      "forbidden_doc_ids": ["doc-soc2-evidence"],
+      "paraphrases": [
+        "What is the SOC 2 evidence upload process?",
+        "Where does SOC 2 compliance evidence go?"
+      ]
+    }
+  ]
+}
