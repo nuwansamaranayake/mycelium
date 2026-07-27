@@ -8,6 +8,36 @@ will enforce; they are **goals, not achieved results**.
 > The scoring code and labeled fixtures land in Phase 1 (see `ROADMAP.md`); until then, `make eval`
 > fails loudly rather than printing a fabricated pass. That is the doctrine, not an oversight.
 
+## Phase 1 acceptance thresholds (written before the harness, 2026-07-27)
+
+Phase 1 ships the keyless retrieval product (folder + upload connectors, hybrid BM25 + cosine
+retrieval with rank fusion, query-time ACL enforcement, citations with deterministic freshness
+labels), so its bounds measure retrieval, access control, citation integrity, and temporal
+labeling. The suite is deterministic and keyless: a golden synthetic corpus (~10 documents with
+planted timestamps and ACLs), labeled queries with pre-authored paraphrase sets, planted
+restricted-principal cases, and the deterministic HashingEmbedder keep it byte-reproducible as a
+required CI check. `scripts/eval.py` exits nonzero on any miss.
+
+| Metric | Definition | Bound |
+|---|---|---|
+| Retrieval hit@3 | labeled queries whose expected document appears in the top-3 fused results | >= 0.85 |
+| ACL leak rate | results surfaced to a restricted principal from a document it may not see (planted adversarial cases) | = 0 |
+| Citation validity | every cited passage exists and the document text at the cited span equals the passage text | = 1.00 |
+| Freshness label correctness | fresh/aging/stale labels versus planted timestamps at the corpus reference time | = 1.00 |
+| Retrieval stability | Jaccard of retrieved doc-id sets between each query and its pre-authored paraphrases | >= 0.60 |
+| Reproducibility | two consecutive `make eval` runs | identical reports |
+
+Staleness math never calls `datetime.now()` in the eval path: the reference time is part of the
+golden corpus and part of the query request; only the live API defaults it to now.
+
+Answer synthesis (LLM stage) is measured separately and key-gated (`scripts/eval_llm.py`):
+every generated sentence must cite a retrieved passage id (citation coverage = 1.00) and every
+cited id must be one of the passages actually retrieved (grounding validity = 1.00), through
+the real gateway. Reported when a key is present, never a required keyless check, and never
+silently skipped: the report states loudly when the key-gated section did not run. The
+retrieval-stability invariant is also declared as a Seismograph behavioral contract in
+`contracts/retrieval-stability.yaml`.
+
 ## What good means
 
 Mycelium is good when a served answer is honest about how much to trust it, when its access control
