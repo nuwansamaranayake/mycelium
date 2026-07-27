@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-07-23
+
 ### Security
 - Adversarial review wave (15 confirmed findings, MYC-001..015) fixed before release:
   - `GET /api/v1/answers/{id}` is no longer unauthenticated: read-back requires the
