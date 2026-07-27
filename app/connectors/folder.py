@@ -24,8 +24,15 @@ class FolderDocument(BaseModel):
     allowed_principals: list[str] = Field(default_factory=list)
 
 
-def ingest_folder(path: str) -> list[FolderDocument]:
-    folder = Path(path)
+def ingest_folder(path: str, ingest_root: str = "data") -> list[FolderDocument]:
+    # Confinement first: the connector reads only inside the configured ingest root.
+    # Without this, the endpoint is an arbitrary local-directory read into the datastore.
+    root = Path(ingest_root).resolve()
+    folder = Path(path).resolve()
+    if not folder.is_relative_to(root):
+        raise PermissionError(
+            f"folder connector: {path!r} is outside the configured ingest root "
+            f"{ingest_root!r}; refusing to read it")
     if not folder.is_dir():
         raise FileNotFoundError(f"folder connector: {path!r} is not a directory")
     manifest: dict = {}

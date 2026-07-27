@@ -40,8 +40,12 @@ def free_port() -> int:
 
 def smoke() -> None:
     port = free_port()
+    smoke_token = os.environ.get("SMOKE_TEST_TOKEN", "dev")
     env = os.environ.copy()
-    env.update({"APP_ENV": "development", "API_HOST": "127.0.0.1", "API_PORT": str(port)})
+    # server and smoke client get the SAME token (FAIL-0007: pin the pairing, never let
+    # ambient env decide) — the gate smokes with auth armed, the way operators run it
+    env.update({"APP_ENV": "development", "API_HOST": "127.0.0.1", "API_PORT": str(port),
+                "SMOKE_TEST_TOKEN": smoke_token})
     server = subprocess.Popen(
         [PY, "-m", "uvicorn", "app.main:app", "--host", "127.0.0.1", "--port", str(port),
          "--log-level", "warning"],
@@ -60,7 +64,7 @@ def smoke() -> None:
             fail("smoke: server never became healthy")
         r = run("smoke", [PY, "scripts/smoke_test.py"], 60,
                 {"API_HOST": "127.0.0.1", "API_PORT": str(port),
-                 "SMOKE_TEST_TOKEN": os.environ.get("SMOKE_TEST_TOKEN", "dev")})
+                 "SMOKE_TEST_TOKEN": smoke_token})
         if r.returncode != 0 or "SMOKE OK" not in r.stdout:
             fail(f"smoke: {r.stdout.strip()} {r.stderr.strip()}"[:300])
         print("GATE smoke: PASS")

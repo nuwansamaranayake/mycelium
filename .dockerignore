@@ -1,0 +1,21 @@
+# Never bake secrets or history into image layers: runtime config arrives via
+# compose env_file, and `docker save`/`docker history` recover anything COPY'd.
+.env
+.env.*
+!.env.example
+.git
+.github
+.venv
+venv
+__pycache__
+*.pyc
+.pytest_cache
+.ruff_cache
+.mypy_cache
+.planning
+LOOP_STATE.md
+eval_report.md
+eval_report_llm.md
+Dockerfile
+docker-compose.yml
+.dockerignore

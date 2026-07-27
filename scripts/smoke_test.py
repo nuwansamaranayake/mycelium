@@ -23,18 +23,29 @@ def get(path: str):
     return body
 
 
-def post(path: str, payload: dict, expect: int = 201):
-    r = httpx.post(BASE + path, headers=HEADERS, json=payload, timeout=30)
+def post(path: str, payload: dict, expect: int = 201, headers: dict | None = None):
+    r = httpx.post(BASE + path, headers=headers or HEADERS, json=payload, timeout=30)
     assert r.status_code == expect, f"{path}: {r.status_code} {r.text[:200]}"
     return r.json()
 
 
 def main():
-    get("/health")
-    assert get("/api/v1/demo").get("items"), "demo endpoint returned no items"
+    env = get("/health").get("env")
+    if env == "development":
+        assert get("/api/v1/demo").get("items"), "demo endpoint returned no items"
+    else:
+        # Standard 3: fixture data outside development must 503 — and the business
+        # assertions below still run, so this smoke gates staging/production too.
+        r = httpx.get(BASE + "/api/v1/demo", headers=HEADERS, timeout=10)
+        assert r.status_code == 503, \
+            f"demo fixture must be disabled outside development, got {r.status_code}"
 
-    post("/api/v1/principals", {"name": "smoke-alice"})
-    post("/api/v1/principals", {"name": "smoke-ops"})
+    # Registration returns each principal's own bearer token; queries authenticate
+    # with it (identity binds to the credential, not the request body).
+    alice = post("/api/v1/principals", {"name": "smoke-alice"})
+    ops = post("/api/v1/principals", {"name": "smoke-ops"})
+    alice_headers = {"Authorization": f"Bearer {alice['token']}"}
+    ops_headers = {"Authorization": f"Bearer {ops['token']}"}
 
     doc = post("/api/v1/documents", {
         "title": "Smoke Travel Policy",
@@ -52,7 +63,7 @@ def main():
         "principal": "smoke-alice",
         "query": "How is business travel booked and which flights are economy?",
         "top_k": 3,
-    })
+    }, headers=alice_headers)
     assert q["results"], "query returned no results for a permitted principal"
     top = q["results"][0]
     # keyed on title, not this run's id: smoke reruns accumulate identical documents
@@ -65,9 +76,15 @@ def main():
         "principal": "smoke-ops",
         "query": "Business travel is booked through the travel portal economy flights",
         "top_k": 10,
-    })
+    }, headers=ops_headers)
     leaked = [r for r in q2["results"] if r["title"] == "Smoke Travel Policy"]
     assert not leaked, f"ACL LEAK: forbidden document surfaced: {leaked}"
+
+    if TOKEN:
+        # identity binding (auth armed): ops' credential must not be able to claim alice
+        r = httpx.post(BASE + "/api/v1/query", headers=ops_headers, timeout=30,
+                       json={"principal": "smoke-alice", "query": "travel", "top_k": 1})
+        assert r.status_code == 403, f"impersonation must be refused, got {r.status_code}"
 
     print("SMOKE OK")
 

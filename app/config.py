@@ -14,6 +14,8 @@ class AppConfig(BaseConfig):
     # Data
     database_url: str = "postgresql+psycopg://aignite:aignite@localhost:5432/mycelium"
     redis_url: str = "redis://localhost:6379/0"
+    # The folder connector may only read inside this root (resolved); anything else is 422.
+    ingest_root: str = "data"
 
     # Model selection — pinned from env, never hardcoded. Blank until populated.
     llm_model_reasoning: str = ""

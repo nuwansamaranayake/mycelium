@@ -2,6 +2,8 @@
 migration applies it, and EXPECTED_TABLE_COUNT asserts the result (Standard 4)."""
 from __future__ import annotations
 
+import threading
+
 import sqlalchemy as sa
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import sessionmaker
@@ -37,6 +39,9 @@ principals = sa.Table(
     "principals", metadata,
     sa.Column("id", sa.Integer, primary_key=True),
     sa.Column("name", sa.Text, nullable=False, unique=True),
+    # Per-principal bearer token issued at registration: query identity binds to this
+    # credential, never to a request-body field (see alembic 0003).
+    sa.Column("token", sa.Text, nullable=False, unique=True),
     sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.func.now()),
 )
 
@@ -90,13 +95,20 @@ answer_citations = sa.Table(
 
 _engine = None
 _Session = None
+_init_lock = threading.Lock()
 
 
 def get_engine():
+    """Lazy init, double-checked under a lock. `_engine` is assigned before `_Session`
+    and every gate checks `_Session`, so a partially initialized state is never
+    observable from FastAPI's threadpool and only one pool is ever created."""
     global _engine, _Session
-    if _engine is None:
-        _engine = sa.create_engine(settings.database_url, pool_pre_ping=True)
-        _Session = sessionmaker(bind=_engine)
+    if _Session is None:
+        with _init_lock:
+            if _Session is None:
+                engine = sa.create_engine(settings.database_url, pool_pre_ping=True)
+                _engine = engine
+                _Session = sessionmaker(bind=engine)
     return _engine
 
 
