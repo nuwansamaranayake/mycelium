@@ -21,6 +21,7 @@ SYNTHESIS_SCHEMA = {
         "properties": {
             "sentences": {
                 "type": "array",
+                "minItems": 1,
                 "items": {
                     "type": "object",
                     "properties": {
@@ -41,6 +42,12 @@ SYNTHESIS_SCHEMA = {
 class CompletesJson(Protocol):
     def complete(self, *, model: str, messages: list[dict],
                  json_schema: dict | None = None, temperature: float = 0.0): ...
+
+
+class EmptySynthesisError(RuntimeError):
+    """The model returned zero sentences: a total synthesis failure. Recording it would
+    produce an empty answer with ungrounded_count=0 — the same machine-readable
+    'perfectly grounded' signal as a fully cited answer. Fail loud instead."""
 
 
 class AnswerSentence(BaseModel):
@@ -89,9 +96,14 @@ def synthesize(
     if isinstance(result, list):  # envelope quirk seen live on some providers (see FAILURES)
         result = {"sentences": result}
     valid_ids = {p["passage_id"] for p in passages}
+    items = result.get("sentences", [])
+    if not items:
+        raise EmptySynthesisError(
+            "synthesis returned no sentences; refusing to record an empty answer "
+            "as perfectly grounded")
     sentences: list[AnswerSentence] = []
     ungrounded = 0
-    for item in result.get("sentences", []):
+    for item in items:
         cited = [str(pid) for pid in item["passage_ids"]]
         grounded = bool(cited) and all(pid in valid_ids for pid in cited)
         if not grounded:

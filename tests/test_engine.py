@@ -9,7 +9,7 @@ from app.engine.corpus import build_corpus
 from app.engine.embedding import HashingEmbedder
 from app.engine.freshness import freshness
 from app.engine.retrieval import allowed_doc_ids, retrieve
-from app.engine.synthesis import synthesize
+from app.engine.synthesis import EmptySynthesisError, synthesize
 
 GOLDEN = json.loads(
     (Path(__file__).resolve().parent.parent / "data" / "synthetic" / "golden" /
@@ -56,6 +56,15 @@ def test_retrieval_finds_relevant_doc():
     hits = retrieve("What is our refund window?", passages, "alice", acls,
                     HashingEmbedder(), top_k=3)
     assert hits and hits[0].doc_id == "doc-refund-policy"
+
+
+def test_retrieval_handles_non_latin_scripts():
+    # ASCII-only tokenization used to zero every signal for Cyrillic content,
+    # returning an empty result set with no error (silently unretrievable docs)
+    passages, acls, _ = _corpus()
+    hits = retrieve("Сколько дней в неделю можно работать удалённо?", passages,
+                    "alice", acls, HashingEmbedder(), top_k=3)
+    assert hits and hits[0].doc_id == "doc-remote-ru"
 
 
 def test_retrieval_is_deterministic():
@@ -118,6 +127,15 @@ def test_synthesis_refuses_without_model_or_passages():
         synthesize(gw, "", "q", [{"passage_id": "x", "text": "t", "freshness_label": "fresh"}])
     with pytest.raises(ValueError):
         synthesize(gw, "m", "q", [])
+
+
+def test_synthesis_empty_sentences_is_a_typed_failure():
+    # zero sentences must never parse into an 'ungrounded_count=0' empty answer —
+    # that is the same machine-readable signal as a perfectly grounded one
+    gw = StubGateway({"sentences": []})
+    with pytest.raises(EmptySynthesisError):
+        synthesize(gw, "m", "q",
+                   [{"passage_id": "x", "text": "t", "freshness_label": "fresh"}])
 
 
 def test_golden_corpus_planted_freshness_labels_hold():

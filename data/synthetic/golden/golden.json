@@ -81,6 +81,14 @@
       "allowed_principals": ["*"],
       "expected_freshness": "fresh",
       "text": "The company observes 12 public holidays in 2026, listed on the intranet calendar. Offices close for a winter break from December 24 through January 1.\n\nRegional holidays follow the local calendar of each office. Remote employees follow the calendar of their contracting entity.\n\nOn-call coverage during company holidays earns a day in lieu."
+    },
+    {
+      "doc_id": "doc-remote-ru",
+      "title": "Регламент удалённой работы",
+      "timestamp": "2026-06-15T00:00:00+00:00",
+      "allowed_principals": ["*"],
+      "expected_freshness": "fresh",
+      "text": "Сотрудники могут работать удалённо до трёх дней в неделю. Заявка на удалённую работу подаётся через портал кадров.\n\nДля постоянной удалённой работы требуется согласование руководителя и отдела кадров.\n\nОборудование для домашнего офиса компенсируется раз в два года по чеку."
     }
   ],
   "queries": [
@@ -192,6 +200,17 @@
       "paraphrases": [
         "Which colors does the brand guide allow?",
         "Primary color palette in the brand guidelines"
+      ]
+    },
+    {
+      "query_id": "q-remote-ru-alice",
+      "principal": "alice",
+      "query": "Сколько дней в неделю можно работать удалённо?",
+      "expected_doc_ids": ["doc-remote-ru"],
+      "forbidden_doc_ids": [],
+      "paraphrases": [
+        "Как подать заявку на удалённую работу через портал?",
+        "Правила удалённой работы для сотрудников"
       ]
     },
     {

@@ -15,7 +15,9 @@ from rank_bm25 import BM25Okapi
 
 from .embedding import Embedder, cosine
 
-_TOKEN = re.compile(r"[a-z0-9]+")
+# Unicode-aware: any letter or digit run (underscore excluded). An ASCII-only pattern
+# silently made Cyrillic/Greek/CJK/Arabic content unretrievable and truncated accents.
+_TOKEN = re.compile(r"[^\W_]+")
 RRF_K = 60
 
 # A passage surfaces only when at least one signal clears this fraction of the best hit.

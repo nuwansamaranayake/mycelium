@@ -84,6 +84,11 @@ def main() -> None:
                     f"ACL breach outside planted set: {h.doc_id} to {q['principal']}"
 
         if q["expected_doc_ids"]:
+            if not base_docs:
+                # A dead labeled query must not read as perfectly stable: the
+                # empty-empty Jaccard convention (1.0) would mask total retrieval
+                # failure across every paraphrase. Score it 0.0 outright.
+                stability_min = 0.0
             for text in q["paraphrases"]:
                 v = retrieve(text, passages, q["principal"], acls, embedder, TOP_K)
                 audit_citations(v)

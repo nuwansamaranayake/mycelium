@@ -14,7 +14,9 @@ from typing import Protocol
 
 import httpx
 
-_TOKEN = re.compile(r"[a-z0-9]+")
+# Unicode-aware, kept identical to retrieval.py's tokenizer so both scoring legs see
+# the same tokens (an ASCII-only pattern zeroed all signals for non-Latin scripts).
+_TOKEN = re.compile(r"[^\W_]+")
 
 
 class Embedder(Protocol):

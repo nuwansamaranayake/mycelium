@@ -12,6 +12,7 @@ q-payroll-harriet: top3=['doc-payroll-calendar'] expected=['doc-payroll-calendar
 q-api-eve: top3=['doc-api-auth'] expected=['doc-api-auth']
 q-soc2-bob: top3=['doc-soc2-evidence'] expected=['doc-soc2-evidence']
 q-brand-mona: top3=['doc-brand-guide'] expected=['doc-brand-guide']
+q-remote-ru-alice: top3=['doc-remote-ru'] expected=['doc-remote-ru']
 q-acl-payroll-alice: top3=['doc-holiday-schedule', 'doc-refund-policy'] forbidden=['doc-payroll-calendar'] (planted ACL case)
 q-acl-incident-alice: top3=['doc-onboarding'] forbidden=['doc-security-runbook'] (planted ACL case)
 q-acl-soc2-mona: top3=['doc-holiday-schedule'] forbidden=['doc-soc2-evidence'] (planted ACL case)
