@@ -187,3 +187,18 @@ the *diagnosed* root cause separately (Standard 5).
   phase that actually imports a local cross-encoder). Tests unchanged and still green.
 - **Doctrine link**: a dependency you do not import is a claim you cannot back. It also
   slowed every deploy, which is how it was noticed while shipping a security fix.
+
+## FAIL-0011 — Answer read leaked which ids exist
+
+- **Date**: 2026-07-27
+- **Surface**: `GET /api/v1/answers/{id}`
+- **Reported symptom**: the post-deploy unauthenticated probe returned **404**, not 401.
+- **Diagnosed cause**: the handler resolved the row before checking the credential, so a
+  caller with no token learned whether an id existed (404 for missing, 401/403 for present).
+  A small oracle, but it also made the security proof ambiguous: the probe could not tell
+  "not found" apart from "not gated at all".
+- **Fix**: the credential is checked before the lookup. Unauthenticated callers now get 401
+  for every id. Regression test asserts 401 for both a missing and an existing id, and that
+  the admin token still gets a truthful 404.
+- **Doctrine link**: test the negative case, and make sure the negative case is *provable*.
+

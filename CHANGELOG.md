@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-07-27
+
+### Security
+- `GET /api/v1/answers/{id}` checks the credential before resolving the row, so an
+  unauthenticated caller can no longer learn which answer ids exist (FAILURES FAIL-0011).
+
 ## [0.2.1] - 2026-07-27
 
 ### Eval

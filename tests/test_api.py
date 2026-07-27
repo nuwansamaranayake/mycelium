@@ -249,3 +249,18 @@ def test_empty_synthesis_is_typed_502_and_never_persisted(client, monkeypatch):
     with db.get_session() as s:
         n = s.execute(sa.select(sa.func.count()).select_from(db.answers)).scalar_one()
     assert n == 0, "an empty synthesis must never be recorded as a grounded answer"
+
+
+def test_answer_read_401s_before_revealing_whether_the_id_exists(client, monkeypatch):
+    """An unauthenticated GET must not distinguish a missing answer from a gated one.
+
+    The production audit probed this path unauthenticated and got 404, which could not be
+    told apart from "no auth at all". The credential is now checked before the lookup.
+    """
+    from app.config import settings
+    monkeypatch.setattr(settings, "smoke_test_token", "sekrit")
+    assert client.get("/api/v1/answers/999999").status_code == 401
+    assert client.get("/api/v1/answers/1").status_code == 401
+    # with the admin token the id-existence answer is allowed to differ
+    assert client.get("/api/v1/answers/999999",
+                      headers={"Authorization": "Bearer sekrit"}).status_code == 404

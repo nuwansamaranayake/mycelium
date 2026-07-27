@@ -331,14 +331,16 @@ def create_answer(body: AnswerIn, authorization: str | None = Header(default=Non
 def get_answer(aid: int, authorization: str | None = Header(default=None)):
     """Answers are synthesized from ACL-filtered passages for the originating query's
     principal — read-back is gated on that same principal (or the admin token). An
-    unauthenticated GET here would leak restricted corpus content by guessing ids."""
+    unauthenticated GET here would leak restricted corpus content by guessing ids.
+
+    The credential is checked BEFORE the row is resolved. Resolving first and returning 404
+    for a missing id tells an unauthenticated caller which answer ids exist, which is a small
+    but real oracle: it was flagged by the 2026-07-27 production audit, where an
+    unauthenticated probe of this path returned 404 rather than 401 and the response could
+    not distinguish "not found" from "not gated".
+    """
     with db.get_session() as s:
-        row = s.execute(
-            sa.select(db.answers, db.queries.c.principal)
-            .join(db.queries, db.answers.c.query_id == db.queries.c.id)
-            .where(db.answers.c.id == aid)).mappings().first()
-        if row is None:
-            raise HTTPException(status_code=404, detail="answer not found")
+        caller: str | None = None
         if not _auth_disabled():
             token = _bearer(authorization)
             if token != settings.smoke_test_token:
@@ -346,10 +348,16 @@ def get_answer(aid: int, authorization: str | None = Header(default=None)):
                               .where(db.principals.c.token == token)).first()
                 if p is None:
                     raise HTTPException(status_code=401, detail="unknown principal token")
-                if p[0] != row["principal"]:
-                    raise HTTPException(
-                        status_code=403,
-                        detail="answer belongs to a different principal")
+                caller = p[0]
+        row = s.execute(
+            sa.select(db.answers, db.queries.c.principal)
+            .join(db.queries, db.answers.c.query_id == db.queries.c.id)
+            .where(db.answers.c.id == aid)).mappings().first()
+        if row is None:
+            raise HTTPException(status_code=404, detail="answer not found")
+        if caller is not None and caller != row["principal"]:
+            raise HTTPException(status_code=403,
+                                detail="answer belongs to a different principal")
         cites = s.execute(sa.select(db.answer_citations)
                           .where(db.answer_citations.c.answer_id == aid)
                           .order_by(db.answer_citations.c.sentence_index)).mappings().all()
