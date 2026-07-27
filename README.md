@@ -1,9 +1,10 @@
 # Mycelium
 
-> **Status: scaffold (v0.1).** The engineering harness is built and verified: live smoke test,
-> fail-loud guards, migration checks, CI. The architecture described below is the design being
-> built; Phase 1 is in progress. [ROADMAP.md](ROADMAP.md) shows what exists today versus what
-> is next.
+> **Status: Phase 1 core loop built (v0.1, branch phase-1).** Two keyless connectors (folder
+> ingester and direct upload), hybrid BM25 plus embedding retrieval with rank fusion, ACLs
+> enforced before scoring, citations with deterministic freshness labels, and a key-gated
+> LLM answer-synthesis stage. The deterministic eval suite is a required CI check.
+> [ROADMAP.md](ROADMAP.md) shows what exists today versus what is next.
 
 **Internal knowledge-base search with self-healing bitemporal memory.**
 
@@ -40,14 +41,23 @@ opens, so "what did the refund policy say on February 14?" is answerable.
 
 ## What exists today (verified)
 
-This scaffold's doctrine is already enforced, not promised. Three checks you can run in five minutes:
+The doctrine is enforced, not promised. Five checks you can run in five minutes:
 
-1. `python scripts/smoke_test.py` against a running instance: hits real endpoints and asserts
-   non-empty, schema-valid data. Passes.
-2. Set `APP_ENV=production` and call `/api/v1/demo`: returns 503, because fixture data outside
+1. `python scripts/eval.py`: the deterministic keyless eval over a golden corpus with planted
+   timestamps and ACLs. Observed on this build: retrieval hit@3 1.0, ACL leak count 0,
+   citation validity 1.0, freshness correctness 1.0, paraphrase stability 1.0, and the report
+   is byte-reproducible across runs (`eval_report.md`).
+2. `python scripts/smoke_test.py` against a running instance: registers principals, uploads a
+   document, ingests the demo folder, queries as a permitted principal (cited, freshness-labeled
+   results) and as a forbidden one (the ACL holds even for a verbatim-text probe). Passes.
+3. `python -m app.cli query --corpus data/synthetic/golden/golden.json --principal alice
+   --query "What is our refund window?"`: keyless, serverless retrieval with citations and
+   freshness labels.
+4. Set `APP_ENV=production` and call `/api/v1/demo`: returns 503, because fixture data outside
    development is forbidden by code, not by convention.
-3. `python scripts/eval.py`: raises loudly instead of passing vacuously. An eval that cannot
-   fail is theater; the real harness lands in Phase 1.
+5. `POST /api/v1/answers` without `OPENROUTER_API_KEY`: returns a typed 503 naming the missing
+   key. With a key, the synthesis eval observed citation coverage 1.00 and grounding validity
+   1.00 (`eval_report_llm.md`).
 
 ## The unique bet
 

@@ -4,9 +4,12 @@ Releases are gated on measured behavior, not vibes. This file defines *what good
 and how `make eval` will measure it. The targets below are acceptance criteria the Phase-1 harness
 will enforce; they are **goals, not achieved results**.
 
-> **Status: the eval harness raises `NotImplementedError` on purpose.** No numbers are reported yet.
-> The scoring code and labeled fixtures land in Phase 1 (see `ROADMAP.md`); until then, `make eval`
-> fails loudly rather than printing a fabricated pass. That is the doctrine, not an oversight.
+> **Status: the harness is real as of Phase 1.** `scripts/eval.py` enforces the threshold table
+> below as a required CI check (first published run 2026-07-27, all bounds PASS —
+> `eval_report.md`, byte-reproducible). Its first run caught three real retrieval defects
+> before they reached a user (FAILURES.md FAIL-0005). The key-gated synthesis section
+> (`scripts/eval_llm.py`) observed citation coverage 1.00 and grounding validity 1.00 through
+> the real gateway (`eval_report_llm.md`).
 
 ## Phase 1 acceptance thresholds (written before the harness, 2026-07-27)
 

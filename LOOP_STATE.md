@@ -8,12 +8,15 @@ LLM answer-synthesis stage through the groundwork gateway.
 ## Milestones
 
 - [x] M1 branch `phase-1` + LOOP_STATE.md + EVAL.md acceptance bounds (written before the harness)
-- [ ] M2 engine modules (embedding, chunking, freshness, retrieval, synthesis) with tests
-- [ ] M3 golden corpus + deterministic keyless eval harness meeting the pre-written bounds
-- [ ] M4 schema + alembic 0002 + API routes + CLI + smoke test (keyless real-processing loop)
-- [ ] M5 contracts/retrieval-stability.yaml validated against Seismograph's contract DSL
-- [ ] M6 key-gated eval_llm run for real; observed numbers recorded
-- [ ] M7 CI eval job flipped to required + docs truth pass (README, contracts.md, CHANGELOG)
+- [x] M2 engine modules (embedding, chunking, freshness, retrieval, synthesis) with tests
+- [x] M3 golden corpus + deterministic keyless eval harness meeting the pre-written bounds
+      (first run failed 2 bounds, found 3 real defects — FAILURES.md FAIL-0005; all PASS now)
+- [x] M4 schema + alembic 0002 + API routes + CLI + smoke test (MIGRATION OK: 9; SMOKE OK)
+- [x] M5 contracts/retrieval-stability.yaml validated against Seismograph's contract DSL
+      (plan_id 6601551bb7660392, 6 entries, loader run from the Seismograph repo)
+- [x] M6 key-gated eval_llm observed: citation coverage 1.00, grounding validity 1.00
+- [x] M7 CI eval job flipped to "eval (required)" + docs truth pass (README, contracts.md,
+      CHANGELOG, EVAL.md status, FAILURES.md FAIL-0004/0005/0006)
 - [ ] FINAL gate.py GATE OK + check_migrations MIGRATION OK + prod-guard + byte-reproducibility
 
 ## DECISION
