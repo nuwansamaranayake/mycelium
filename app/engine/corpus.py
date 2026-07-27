@@ -29,5 +29,6 @@ def build_corpus(
         for chunk in chunk_document(doc["text"]):
             passages.append(CorpusPassage(
                 passage_id=f"{doc_id}#p{chunk.ordinal}", doc_id=doc_id,
-                text=chunk.text, span_start=chunk.span_start, span_end=chunk.span_end))
+                text=chunk.text, span_start=chunk.span_start, span_end=chunk.span_end,
+                title=doc.get("title", "")))
     return passages, acls, timestamps

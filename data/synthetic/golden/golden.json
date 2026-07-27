@@ -40,7 +40,7 @@
       "timestamp": "2026-01-15T00:00:00+00:00",
       "allowed_principals": ["*"],
       "expected_freshness": "aging",
-      "text": "Install the WireGuard client from the software portal, then import the profile named corp-vpn from the device management console.\n\nAuthenticate with your SSO account and approve the push notification. The VPN connects automatically on untrusted networks.\n\nIf the laptop cannot reach internal DNS after connecting, toggle the profile off and on, then contact the helpdesk."
+      "text": "To set up the VPN, install the WireGuard client from the software portal, then import the profile named corp-vpn from the device management console.\n\nAuthenticate with your SSO account and approve the push notification. The VPN connects automatically on untrusted networks.\n\nIf the laptop cannot reach internal DNS after connecting, toggle the profile off and on, then contact the helpdesk."
     },
     {
       "doc_id": "doc-api-auth",
