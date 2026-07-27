@@ -126,3 +126,34 @@ the *diagnosed* root cause separately (Standard 5).
 - **Doctrine link**: Standard 1 (the defect was in the tests' assumptions, not the auth code —
   fix named at the root) and the gate exists precisely to run checks the way CI and operators
   will, not the way a developer's shell happens to be configured.
+
+## FAIL-0008 — Adversarial review found 15 confirmed defects the gate had been passing over
+
+- **Date**: 2026-07-27
+- **Surface**: whole-repo adversarial code review (MYC-001..MYC-015) before release
+- **Reported symptom**: `GATE OK` on every run while the review confirmed 1 critical,
+  6 major, and 8 minor defects.
+- **Worst findings**: `GET /api/v1/answers/{id}` served ACL-restricted synthesized content
+  to any unauthenticated caller by guessing ids (critical); `/api/v1/query` trusted the
+  body's `principal` verbatim, so any token holder impersonated anyone; `_auth` failed
+  open when `SMOKE_TEST_TOKEN` was empty, in every environment; no `.dockerignore`, so
+  `COPY . .` baked the populated `.env` and `.git` history into image layers; the LLM
+  round-trip ran inside an open DB transaction, pinning pooled connections for up to 60s;
+  an empty synthesis was persisted with `ungrounded_count=0` — the same machine-readable
+  signal as a perfectly grounded answer.
+- **Diagnosed cause**: the gate measures what its checks encode. Every check exercised the
+  happy path of the documented dev flow: single shared token, body-trusted identity,
+  development env, non-empty synthesis stubs, English corpus. The defects lived exactly in
+  the branches no check reached — and two checks (the empty-empty Jaccard stability
+  convention, the falsy `EXPECTED_TABLE_COUNT=0` guard) were themselves structured to
+  report green on total failure.
+- **Root cause**: verification asymmetry — the checks were written by the same hands and
+  assumptions as the code, so shared blind spots passed both. An adversarial pass with
+  fresh context found them before release; the fixes land with regression tests for each.
+- **Fix**: all 15 findings fixed in this wave (see CHANGELOG [Unreleased] Security/Fixed);
+  the review's leak scenarios are now pinned by tests (impersonation 403, unauthenticated
+  read-back 401, prod fail-closed 503, ingest-root 422, empty-synthesis 502, Cyrillic
+  retrieval, not-armed migration check exit 1).
+- **Doctrine link**: Standard 3 (fail loud — three of the findings were silent-green
+  failure modes) and the portfolio thesis: deterministic gates are only as honest as the
+  branches they exercise; adversarial review is part of the gate, not an optional extra.

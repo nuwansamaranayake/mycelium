@@ -7,6 +7,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+- Adversarial review wave (15 confirmed findings, MYC-001..015) fixed before release:
+  - `GET /api/v1/answers/{id}` is no longer unauthenticated: read-back requires the
+    originating query's principal token (or the admin token) when auth is armed —
+    restricted corpus content can no longer be read by guessing sequential ids.
+  - Query identity now binds to a credential: registration issues a per-principal bearer
+    token (`principals.token`, alembic `0003_principal_tokens`), and `/api/v1/query`
+    derives the principal from it (403 on body/credential mismatch, 401 for unknown or
+    admin tokens) instead of trusting the request body.
+  - Auth no longer fails open: an empty `SMOKE_TEST_TOKEN` turns auth off in development
+    only; staging/production get a typed 503 naming the variable.
+  - The folder connector is confined to a configured `INGEST_ROOT` (default `data`);
+    paths resolving outside it are a typed 422 instead of an arbitrary local-directory
+    read into the datastore.
+  - Added `.dockerignore` so `COPY . .` no longer bakes `.env` (live key material) and
+    `.git` history into image layers.
+
+### Fixed
+- LLM/network calls no longer run inside open DB transactions: `/api/v1/query` and
+  `/api/v1/answers` load inputs in a short read session, call the embedder/gateway with no
+  transaction open, then write in a second short transaction (no more pool starvation
+  during 60s LLM round-trips).
+- Empty synthesis (zero sentences) is a typed `EmptySynthesisError` surfaced as 502 and
+  never persisted; previously it was recorded as a "perfectly grounded" empty answer with
+  `ungrounded_count=0`. The JSON schema now sets `minItems: 1`.
+- Principal registration is race-safe: insert-first with the unique constraint as the
+  arbiter (concurrent duplicate registration returns the idempotent response instead of a
+  500 `IntegrityError`).
+- Tokenization is Unicode-aware in both retrieval legs (`[^\W_]+` replaces ASCII-only
+  `[a-z0-9]+`): Cyrillic/Greek/CJK/Arabic content is retrievable and accented Latin terms
+  are no longer truncated. A Cyrillic document/query pair was added to the golden corpus.
+- `scripts/eval.py` stability scoring no longer reports a dead labeled query (empty
+  retrieval) as perfectly stable via the empty-empty Jaccard convention; it scores 0.0.
+- `scripts/check_migrations.py` refuses to print `MIGRATION OK` when
+  `EXPECTED_TABLE_COUNT` is unset or 0 (`MIGRATION CHECK NOT ARMED`, exit 1).
+- `scripts/smoke_test.py` now branches on `/health`'s env: outside development it asserts
+  the demo fixture 503s and still runs every business assertion, so the smoke gate works
+  against staging/production; with auth armed it also asserts impersonation is refused.
+- `/api/v1/query` with `embedder=openrouter` and missing `OPENROUTER_API_KEY` /
+  `EMBEDDING_MODEL` returns a typed 503 naming the variable, matching the `/answers` path.
+- Engine/session lazy init is guarded by a lock and gated on the fully initialized state
+  (no cold-start race creating duplicate pools or observing a half-built session factory).
+- README quickstart smoke commands export `SMOKE_TEST_TOKEN=dev-smoke-token`, matching
+  `.env.example`, so following the quickstart verbatim yields `SMOKE OK` instead of 401.
+
 ### Added
 - Phase 1 core loop (branch `phase-1`): two keyless connectors (folder ingester with optional
   `manifest.json`, direct `POST /api/v1/documents` upload), hybrid retrieval (BM25 + embedding
