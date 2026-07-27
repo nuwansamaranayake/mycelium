@@ -157,3 +157,16 @@ the *diagnosed* root cause separately (Standard 5).
 - **Doctrine link**: Standard 3 (fail loud — three of the findings were silent-green
   failure modes) and the portfolio thesis: deterministic gates are only as honest as the
   branches they exercise; adversarial review is part of the gate, not an optional extra.
+
+## FAIL-0009 — Eval report embedded an environment-dependent line, breaking byte-reproducibility across environments
+
+- **Date**: 2026-07-23
+- **Surface**: `scripts/eval.py` report writer (central post-fix verification sweep)
+- **Reported symptom**: the committed eval_report.md differed by one trailer line when the
+  gate ran in a shell with a different OPENROUTER_API_KEY state.
+- **Diagnosed cause**: the key-gated-section status note (present/absent by ambient env) was
+  written into the report file, so "byte-reproducible" only held within one environment.
+- **Fix**: the note now goes to stdout only; the report file is purely deterministic. Verified
+  by running the eval with and without a key and comparing byte-for-byte.
+- **Doctrine link**: reproducibility bounds must be environment-independent, or they are
+  theater in every environment except the author's.

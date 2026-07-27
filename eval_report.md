@@ -24,5 +24,3 @@ q-acl-soc2-mona: top3=['doc-holiday-schedule'] forbidden=['doc-soc2-evidence'] (
 | citation_validity | 1.0 | >= 1.0 | PASS |
 | freshness_correctness | 1.0 | >= 1.0 | PASS |
 | retrieval_stability_min | 1.0 | >= 0.6 | PASS |
-
-key-gated synthesis section: run scripts/eval_llm.py (not part of this deterministic report)
