@@ -1,6 +1,6 @@
 # Mycelium
 
-> **Status: Phase 1 core loop released (v0.2.2).** Two keyless connectors (folder
+> **Status: Phase 1 core loop released (v0.2.3).** Two keyless connectors (folder
 > ingester and direct upload), hybrid BM25 plus embedding retrieval with rank fusion, ACLs
 > enforced before scoring, citations with deterministic freshness labels, and a key-gated
 > LLM answer-synthesis stage. The deterministic eval suite is a required CI check.

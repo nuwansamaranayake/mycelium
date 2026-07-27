@@ -41,6 +41,15 @@ silently skipped: the report states loudly when the key-gated section did not ru
 retrieval-stability invariant is also declared as a Seismograph behavioral contract in
 `contracts/retrieval-stability.yaml`.
 
+## Published limits
+
+This sentence is what the root page publishes, verbatim. The gate fails if the page and this block drift apart.
+
+<!-- LIMITS -->
+On a golden corpus of synthetic documents with planted timestamps and access rules, retrieval leaks nothing across principal boundaries (0 ACL leaks), every citation resolves to text that exists in the cited passage (1.0), every freshness label matches the planted timestamp (1.0), and the retrieved document set is stable across query paraphrases (jaccard 1.0 against a 0.60 bound); the corpus is synthetic, so it does not measure recall on a real knowledge base.
+<!-- /LIMITS -->
+
+
 ## What good means
 
 Mycelium is good when a served answer is honest about how much to trust it, when its access control

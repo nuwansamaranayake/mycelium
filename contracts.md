@@ -8,6 +8,7 @@ backend endpoint, or an endpoint whose shape drifts from this table, is a CI fai
 
 | Frontend call (Phase 2) | Method | Path | Status | Notes |
 |---|---|---|---|---|
+| Front page (browser) | GET | `/` | none | Self-contained HTML: thesis, what it measures, the EVAL.md limits sentence, the endpoint list, build stamp. Public by design. |
 | Liveness/readiness probe | `GET` | `/health` | implemented | Returns `{status, env}`. No auth. Used by smoke test and orchestration. |
 | Demo fixture view | `GET` | `/api/v1/demo` | implemented | Returns `{items: [...]}` from `data/synthetic/`. Development-only; returns **503** outside `development`. Smoke test asserts `items` non-empty. |
 | API schema | `GET` | `/openapi.json`, `/docs` | implemented | OpenAPI spec + Swagger UI, served by FastAPI. This file is diffed against it. |
