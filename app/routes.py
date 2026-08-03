@@ -23,11 +23,12 @@ import secrets
 from datetime import datetime, timezone
 
 import sqlalchemy as sa
-from fastapi import APIRouter, Header, HTTPException
+from groundwork import DemoRefused
+from fastapi import APIRouter, Header, HTTPException, Request
 from groundwork import BaseConfig, Env, LLMGateway
 from pydantic import BaseModel, Field
 
-from . import db
+from . import db, demo
 from .config import settings
 from .connectors.folder import ingest_folder
 from .engine.embedding import HashingEmbedder, OpenRouterEmbedder
@@ -252,6 +253,16 @@ def run_query(body: QueryIn, authorization: str | None = Header(default=None)):
     with db.get_session() as s:
         principal = _bind_principal(s, authorization, body.principal)
         corpus, acls, timestamps, titles = _load_corpus(s)
+    try:
+        demo.check_query_budget(principal)
+    except DemoRefused as e:
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
+    # D1: the filter's position is a fact the UI shows, not a claim it makes. The visible
+    # set is computed BEFORE any scoring (retrieval filters first); the counts below come
+    # from that same computation, so "excluded before scoring" is observed, not asserted.
+    from .engine.retrieval import allowed_doc_ids
+    visible = allowed_doc_ids(principal, acls)
+    excluded = len(acls) - len(visible)
     hits = retrieve(body.query, corpus, principal, acls, embedder, body.top_k)
     by_id = {p.passage_id: p for p in corpus}
     results = []
@@ -278,7 +289,10 @@ def run_query(body: QueryIn, authorization: str | None = Header(default=None)):
             as_of=as_of)).inserted_primary_key[0]
         for row in retrieval_rows:
             s.execute(db.retrievals.insert().values(query_id=qid, **row))
-    return {"query_id": qid, "as_of": as_of.isoformat(), "results": results}
+    return {"query_id": qid, "as_of": as_of.isoformat(), "results": results,
+            "acl": {"principal": principal, "visible_documents": len(visible),
+                    "excluded_documents": excluded,
+                    "filtered_before_scoring": True}}
 
 
 @router.post("/answers", status_code=201)
@@ -363,3 +377,23 @@ def get_answer(aid: int, authorization: str | None = Header(default=None)):
                           .order_by(db.answer_citations.c.sentence_index)).mappings().all()
     answer = {k: v for k, v in dict(row).items() if k != "principal"}
     return {"answer": answer, "citations": [dict(c) for c in cites]}
+
+
+# --------------------------------------------------------------------------- demo (Part C)
+@router.post("/demo/session", status_code=201)
+def open_demo_session(request: Request):
+    """Public by design: it ISSUES credentials, it does not bypass them. Rate-limited per
+    source address by the shared kit; everything it seeds carries the tenant prefix, so
+    scope is a string comparison and the estate retention sweep reclaims every row."""
+    forwarded = request.headers.get("x-forwarded-for") or ""
+    ip = (forwarded.split(",")[0].strip()
+          or (request.client.host if request.client else "unknown"))
+    try:
+        token, prefix = demo.kit().create_session(ip)
+    except DemoRefused as e:
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
+    with db.get_session() as s, s.begin():
+        seeded = demo.seed_tenant(s, prefix, _store_document)
+    return {"token": token, "token_type": "bearer",
+            "expires_in": settings.demo_session_ttl_seconds,
+            "request_budget": settings.demo_request_budget, **seeded}
