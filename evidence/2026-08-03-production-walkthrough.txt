@@ -1,0 +1,22 @@
+# G6: the demo path walked against https://mycelium.aigniteconsulting.ai exactly as a
+# visitor would, in a real browser, 2026-08-03 (deployed: v0.3.0, SHA d55daf5).
+
+1. /demo -> "Start the demo" -> session opened, no credentials; synthetic banner shown.
+2. Broad access asks the vault question: Incident Response Runbook (RESTRICTED) in the
+   results; banner "Access filter, before scoring: 4 documents visible to this principal,
+   24 excluded" (the 24 are other tenants' rows in the production corpus - isolation
+   visible in both directions).
+3. Switch to Restricted contractor, same question: ZERO results; banner "3 documents
+   visible, 25 excluded"; the page states the excluded documents were "never scored,
+   never retrieved, never shown". The runbook appears nowhere in results or sources.
+4. Deploy question as broad: freshness chips "fresh - 0d" and "stale - 1096d" on the
+   disagreeing pair; the page states labels are date arithmetic, not model opinion.
+5. "Synthesize the cited answer": 4 citations; "Every sentence grounded in a cited
+   passage. Model: anthropic/claude-sonnet-5." Citation click resolves to the passage
+   panel (Deploy Process (current), fresh).
+6. Parental-leave question: "The corpus cannot answer this. Zero passages retrieved" -
+   the honest miss, no synthesis call.
+
+# Estate gate on the same host: evidence/2026-08-03-postdeploy-smoke.txt (exit 0, 6 apps;
+# mycelium loop includes the production negatives: demo cross-tenant 0, restricted seed
+# excluded, no-token 401x2). TLS: Verify return code 0 (ok).
