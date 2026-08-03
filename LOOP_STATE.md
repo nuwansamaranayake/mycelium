@@ -54,7 +54,7 @@ retrieval scoring, visible in the UI. Cited answers, warranty labels, honest mis
 | Audit | done | this file, header |
 | A1/A3 groundwork helper + shared assertion | **done** | groundwork `2ae0847`, 22 tests |
 | A2 careercompiler on the helper | **done** | CC `2f0452b`, 78 tests on groundwork v0.2.0 |
-| A2 remaining four apps (seismograph, triage, almanac, parallax): pin bump + version= + shared test | todo | |
+| A2 remaining four apps | **done** | Seismograph `400667d`, Triage `ae74973`, Almanac `82508d6`, Parallax `f87d338`; all suites green on v0.2.0 (45/54/58/37) |
 | B1/B3 demokit extracted + proven | **done** | groundwork `2ae0847`; 6 kit tests (403/429/expiry/rate/prefix shape) |
 | B4 CC refactor onto the kit | **done** | CC `2f0452b`; suite passed unchanged, which is B4's proof |
 | B5 webshell extracted | **done** | groundwork/webshell/ (css, layout, lib/session.ts) |
@@ -77,10 +77,17 @@ retrieval scoring, visible in the UI. Cited answers, warranty labels, honest mis
    DemoRefused, guard_prefix`; `_auth` catches DemoRefused -> HTTPException; delete the
    duplicated FakeRedis from tests (import from groundwork.testing); main.py/frontpage
    import groundwork.build_version. Suite must pass unchanged (B4's proof).
-2. A2 in the other four apps (seismograph, triage, almanac, parallax): pin bump +
-   `FastAPI(title=..., version=build_version())` + the shared version test.
-3. Then C (mycelium demo access via the kit + the 4-doc/2-principal seed), D1, D, G, H per
-   the plan above. H order: groundwork push+tag v0.2.0 FIRST (CI green before tag).
+2. DONE — all four committed, suites green.
+3. NOW: Part C — mycelium demo access via the kit. Read mycelium app/routes.py (auth
+   pattern mirrors CC pre-refactor: _auth against SMOKE_TEST_TOKEN), wire DemoKit exactly
+   as CC's 2f0452b does (demo.py wrapper + _auth DemoRefused mapping + guard on
+   documents.title / principals.name prefixes), add POST /api/v1/demo/session seeding:
+   principals demo-<p>broad + demo-<p>restricted; 4 docs (restricted: acl only broad;
+   stale: old observed_at so freshness labels stale; fresh: answers 'what is the deploy
+   process'; two conflicting on the same question), all titles demo-prefixed. Query flow
+   needs principal param already served. Then D1 (web app vendoring groundwork/webshell),
+   D, G, H. Apps NOT yet pushed: the four A2 apps + CC B4 + mycelium — push at H, CI green
+   before tags, deploy wave with snapshot first. H order: groundwork push+tag v0.2.0 FIRST (CI green before tag).
 
 ## Groundwork: pushed and tagged
 - v0.2.0 = `2ae0847`, CI green (3 checks) observed BEFORE the tag. Apps pin @v0.2.0.
