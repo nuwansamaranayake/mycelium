@@ -60,11 +60,12 @@ retrieval scoring, visible in the UI. Cited answers, warranty labels, honest mis
 | B5 webshell extracted | **done** | groundwork/webshell/ (css, layout, lib/session.ts) |
 | C demo access + seed | **done** | `586dd20` + answers-auth commit; 40 tests incl. the ACL refusal with positive anchor |
 | D1–D4, D6 frontend | **done** | web/ committed; local E2E 2x 10/10 (`evidence/2026-08-03-local-e2e.txt`); wildcard-ACL tenancy hole found by E2E and closed |
-| D5 upload, D7 contracts re-derive + literal test, D8 truth audit run | todo | truth-layer doc exists; D5 not wired (BLOCKED line if cut) |
-| G smoke extension + production negative (restricted doc must not leak, live) | todo | |
-| H release wave (groundwork -> CC -> mycelium -> portfolio-ops) | todo | |
-| E healing loop | stretch | |
-| F conflict detection | stretch; F1 constraint absolute | |
+| D5 upload + D7 contracts | **done** | `de51cd6`; literal enforcement green |
+| D8 truth layer | **done** | docs/agent-legibility doc; copy written from it; novelty claim survey-scoped on the page |
+| G | **done** | estate gate exit 0 incl. mycelium production negatives; TLS verify 0; walkthrough `evidence/2026-08-03-production-walkthrough.txt` |
+| H | **done** | all 7 repos pushed, CI green observed per repo BEFORE tags (groundwork v0.2.0, CC v0.3.2, mycelium v0.3.0, ops v0.4.0, four apps v0.3.2); snapshot 02:32Z; deployed: mycelium + the four slim apps; estate gate exit 0 after |
+| E healing loop | **not built, stated honestly** | ROADMAP says Phase 2 partial and names it |
+| F conflict detection | not built | F1 held: zero new torch containers |
 
 ## BLOCKED
 (none yet)
@@ -151,3 +152,14 @@ retrieval scoring, visible in the UI. Cited answers, warranty labels, honest mis
   wave (push all repos, CI green -> tags: groundwork done; CC v0.3.2; mycelium v0.3.0;
   portfolio-ops minor; snapshot; deploy mycelium (+CC rebuild for B4? CC deploy optional
   — code-only refactor, same behavior; decide at H), estate smoke, walkthrough, 1h stats).
+
+## Post-wave notes (2026-08-03)
+
+- DECISION: careercompiler's B4 refactor is tagged v0.3.2 with CI green but NOT redeployed
+  — its live v0.3.1 is demo-critical tomorrow and B4 is behavior-identical by its own
+  proof. Redeploy rides the next CC wave.
+- Triage incident during the A2 wave: service-netns recreate trap, ~minutes of 502, fixed
+  by full-stack recreate; recorded in Triage/FAILURES.md. Estate gate exit 0 afterwards.
+- H5 stats watch running on the host (pid 3963180, /tmp/myc-stats-watch.log).
+- Served versions verified live: seismograph/triage/almanac/parallax 0.3.2, mycelium
+  0.3.0, careercompiler 0.3.1 — the estate version defect is closed end to end.
