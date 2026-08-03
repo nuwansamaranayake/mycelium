@@ -19,3 +19,6 @@ eval_report_llm.md
 Dockerfile
 docker-compose.yml
 .dockerignore
+web/node_modules/
+web/.next/
+web/out/
