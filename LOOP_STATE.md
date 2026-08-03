@@ -94,3 +94,25 @@ retrieval scoring, visible in the UI. Cited answers, warranty labels, honest mis
 - CC is NOT yet pushed/deployed with the refactor: its next push must wait for a CI run
   (the pin resolves from GitHub, so CI will exercise groundwork v0.2.0 for real), then
   deploy rides mycelium's H wave.
+
+## Part C wiring facts (read from routes.py, do not re-read)
+
+- `_store_document(s, external_id=, title=, text=, source=, doc_timestamp=,
+  allowed_principals=) -> (did, n_chunks)` chunks + writes acl_entries.
+- Principals carry their OWN bearer tokens (`principals.token`, issued at registration);
+  `/query` authenticates via `_bind_principal` (token must match claimed principal).
+  So the demo session returns BOTH seeded principals' tokens and the UI's principal
+  switcher just switches which bearer it sends — the ACL demo rides existing auth.
+- `_auth` is the admin gate on mutations. Demo upload (D5) needs a scoped path: demo
+  session token allows document upload with title forced to the tenant prefix and
+  allowed_principals restricted to tenant-prefixed principals.
+- Query budget for demo principals: redis INCR `demo:q:{principal}` TTL = session TTL,
+  cap = demo_request_budget, refuse 429 (synthesis costs LLM tokens).
+- Seed: principals {prefix}broad, {prefix}restricted. Docs (titles prefixed):
+  R "Incident Response Runbook (restricted)" acl [broad] with fact "failover vault
+  rotated every 30 days"; S "Deploy Process (2023)" doc_timestamp 2023 (stale) says
+  Jenkins; F "Deploy Process (current)" fresh, says GitHub Actions + smoke gate (S/F =
+  the material disagreement pair); N "Onboarding FAQ" fresh, VPN answer. Honest-miss
+  question: parental leave policy (no doc). D1 needs the /query response to carry an
+  `excluded_by_acl` count sourced from the retrieval trace — check /query body + engine
+  filter position when wiring.
