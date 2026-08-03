@@ -1,0 +1,30 @@
+# Mycelium local compose E2E, real retrieval + real LLM synthesis. 2026-08-03.
+# MIGRATION OK: 9 tables. Two consecutive runs.
+## run 1
+time="2026-08-02T21:27:24-05:00" level=warning msg="project has been loaded without an explicit name from a symlink. Using name \"mycelium\""
+  PASS  session opens credential-free  docs=4
+  PASS  broad sees the restricted runbook  excluded=15
+  PASS  restricted principal: runbook absent, exclusion counted BEFORE scoring  excluded=16
+  PASS  stale and fresh labels disagree on deploys  {'oy Process (current)': 'fresh', 's (2023, superseded)': 'stale', 'Runbook (RESTRICTED)': 'fresh'}
+  PASS  the honest miss: zero passages, no guess
+  PASS  synthesis with the principal's own token  status=201
+  PASS  answer sentences carry citations  sentences=3 ungrounded=0
+  PASS  every citation resolves to a retrieved passage
+  PASS  no token stays 401 on synthesis
+  PASS  another principal cannot synthesize my answer
+
+E2E OK: 10 checks, real retrieval + real synthesis, synthetic corpus
+## run 2
+time="2026-08-02T21:27:29-05:00" level=warning msg="project has been loaded without an explicit name from a symlink. Using name \"mycelium\""
+  PASS  session opens credential-free  docs=4
+  PASS  broad sees the restricted runbook  excluded=19
+  PASS  restricted principal: runbook absent, exclusion counted BEFORE scoring  excluded=20
+  PASS  stale and fresh labels disagree on deploys  {'oy Process (current)': 'fresh', 's (2023, superseded)': 'stale', 'Runbook (RESTRICTED)': 'fresh'}
+  PASS  the honest miss: zero passages, no guess
+  PASS  synthesis with the principal's own token  status=201
+  PASS  answer sentences carry citations  sentences=3 ungrounded=0
+  PASS  every citation resolves to a retrieved passage
+  PASS  no token stays 401 on synthesis
+  PASS  another principal cannot synthesize my answer
+
+E2E OK: 10 checks, real retrieval + real synthesis, synthetic corpus

@@ -137,3 +137,21 @@ def test_a_principal_can_synthesize_only_their_own_answers(client, monkeypatch):
     assert r.status_code == 401, "another principal must not synthesize my answer"
     r = client.post("/api/v1/answers", json={"query_id": qid})
     assert r.status_code == 401, "no token stays 401 (estate invariant)"
+
+
+def test_wildcard_acls_do_not_reach_demo_tenants(client):
+    """A "*" grant means any member of the organization; a demo visitor is not one.
+    Without this, a demo principal retrieves other tenants' wildcard documents."""
+    client.post("/api/v1/documents", json={
+        "title": "Org-wide Handbook", "text": "Remote work policy: work from anywhere.",
+        "doc_timestamp": "2026-08-01T00:00:00+00:00",
+        "allowed_principals": ["*"]}, headers=H)
+    s = _session(client)
+    broad = next(p for p in s["principals"] if p["role"] == "broad")
+    r = _query(client, broad, "What is the remote work policy?").json()
+    assert not any("Handbook" in x["title"] for x in r["results"]), \
+        "a demo principal reached a wildcard document from outside its tenant"
+
+    from app.engine.retrieval import allowed_doc_ids
+    assert allowed_doc_ids("employee", {"1": {"*"}}) == {"1"}, \
+        "ordinary principals must keep wildcard access"

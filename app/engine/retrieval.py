@@ -57,10 +57,16 @@ class RetrievedPassage(BaseModel):
 
 
 def allowed_doc_ids(principal: str, acls: dict[str, set[str]]) -> set[str]:
-    """Documents the principal may see. `*` grants every principal; a document with no ACL
-    entry is private by default — absence never grants access."""
+    """Documents this principal may see. A wildcard grant means "any member of the
+    organization" — and a demo-tenant principal is not one. Without that carve-out a demo
+    visitor would retrieve every wildcard document in the corpus, including other tenants'
+    rows: observed locally when a seeded miss question matched a dev-fixture doc through
+    its "*" ACL. Demo principals see exactly what names them. A document with no ACL
+    entry stays private by default — absence never grants access."""
     if not principal:
         raise ValueError("query carries no principal; refusing to retrieve without identity")
+    if principal.startswith("demo-"):
+        return {doc_id for doc_id, who in acls.items() if principal in who}
     return {doc_id for doc_id, who in acls.items() if "*" in who or principal in who}
 
 

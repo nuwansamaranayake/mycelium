@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 
+from groundwork import build_version
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -11,7 +12,7 @@ from .fixtures import load_synthetic_fixture
 from .frontpage import render as render_front_page
 from .routes import router
 
-app = FastAPI(title="Mycelium")
+app = FastAPI(title="Mycelium", version=build_version())
 app.include_router(router)
 
 
