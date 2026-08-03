@@ -59,8 +59,8 @@ retrieval scoring, visible in the UI. Cited answers, warranty labels, honest mis
 | B4 CC refactor onto the kit | **done** | CC `2f0452b`; suite passed unchanged, which is B4's proof |
 | B5 webshell extracted | **done** | groundwork/webshell/ (css, layout, lib/session.ts) |
 | C demo access + seed | **done** | `586dd20` + answers-auth commit; 40 tests incl. the ACL refusal with positive anchor |
-| D1 ACL refusal screen | todo | |
-| D2–D8 | todo | |
+| D1–D4, D6 frontend | **done** | web/ committed; local E2E 2x 10/10 (`evidence/2026-08-03-local-e2e.txt`); wildcard-ACL tenancy hole found by E2E and closed |
+| D5 upload, D7 contracts re-derive + literal test, D8 truth audit run | todo | truth-layer doc exists; D5 not wired (BLOCKED line if cut) |
 | G smoke extension + production negative (restricted doc must not leak, live) | todo | |
 | H release wave (groundwork -> CC -> mycelium -> portfolio-ops) | todo | |
 | E healing loop | stretch | |
