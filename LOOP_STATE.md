@@ -53,9 +53,10 @@ retrieval scoring, visible in the UI. Cited answers, warranty labels, honest mis
 |---|---|---|
 | Audit | done | this file, header |
 | A1/A3 groundwork helper + shared assertion | **done** | groundwork `2ae0847`, 22 tests |
-| A2 apply to six apps (pin bump v0.2.0, FastAPI version=, front pages) | todo | CC folds its own fix onto the helper |
+| A2 careercompiler on the helper | **done** | CC `2f0452b`, 78 tests on groundwork v0.2.0 |
+| A2 remaining four apps (seismograph, triage, almanac, parallax): pin bump + version= + shared test | todo | |
 | B1/B3 demokit extracted + proven | **done** | groundwork `2ae0847`; 6 kit tests (403/429/expiry/rate/prefix shape) |
-| B4 CC refactor onto the kit (app/demo.py -> DemoKit; _auth maps DemoRefused; keep seed app-side; suite must pass) | todo | |
+| B4 CC refactor onto the kit | **done** | CC `2f0452b`; suite passed unchanged, which is B4's proof |
 | B5 webshell extracted | **done** | groundwork/webshell/ (css, layout, lib/session.ts) |
 | C mycelium demo access + seed (restricted/stale/fresh/conflicting docs, 2 principals) | todo | |
 | D1 ACL refusal screen | todo | |
@@ -70,7 +71,7 @@ retrieval scoring, visible in the UI. Cited answers, warranty labels, honest mis
 
 ## Next action on resume
 
-1. A2+B4 in careercompiler: pyproject pin `aignite-groundwork @ git+...@v0.2.0` (tag does
+1. DONE (CC `2f0452b`). Was: A2+B4 in careercompiler: pyproject pin `aignite-groundwork @ git+...@v0.2.0` (tag does
    not exist yet — push groundwork + tag first, or pin the SHA `2ae0847` until the tag);
    replace app/demo.py's session/prefix code with `from groundwork import DemoKit,
    DemoRefused, guard_prefix`; `_auth` catches DemoRefused -> HTTPException; delete the
@@ -81,6 +82,8 @@ retrieval scoring, visible in the UI. Cited answers, warranty labels, honest mis
 3. Then C (mycelium demo access via the kit + the 4-doc/2-principal seed), D1, D, G, H per
    the plan above. H order: groundwork push+tag v0.2.0 FIRST (CI green before tag).
 
-## Groundwork push checklist (H1 head)
-- groundwork has CI? Check .github/ — if none, its 22 tests must run in CI before the tag
-  (add a minimal pytest workflow in the same wave).
+## Groundwork: pushed and tagged
+- v0.2.0 = `2ae0847`, CI green (3 checks) observed BEFORE the tag. Apps pin @v0.2.0.
+- CC is NOT yet pushed/deployed with the refactor: its next push must wait for a CI run
+  (the pin resolves from GitHub, so CI will exercise groundwork v0.2.0 for real), then
+  deploy rides mycelium's H wave.
