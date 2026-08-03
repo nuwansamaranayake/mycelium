@@ -18,22 +18,19 @@ The honest read path first.
 - Eval harness stood up (replaces the intentional `NotImplementedError`): recall@k, citation
   precision, and a zero-ACL-leakage adversarial test.
 
-## Phase 2 — The healing loop + first UI
+## Phase 2 — partial (2026-08-03, honest status)
 
-*Mirrors GitHub Milestone "Phase 2 — Healing loop".*
+**Shipped:** credential-less demo sessions on the shared estate kit (scoped, budgeted,
+expiring; tenant-prefixed rows swept by the estate retention), the frontend (principal
+switcher, pre-scoring ACL exclusion counts on screen, freshness chips, honest misses,
+cited synthesis with ungrounded sentences flagged), demo-scoped PDF/docx upload, and the
+wildcard-ACL carve-out for demo tenants (found by the local E2E: a "*" grant must not
+reach a demo visitor).
 
-Close the write path end to end on one team, and ship the interface.
-
-- Telemetry scoring of every query (was retrieval confident, did sources agree, was evidence fresh,
-  did the user accept the answer?).
-- Gap-ticket generator: failed and low-confidence queries aggregate into demand-ranked tickets.
-- Owner routing over a deterministic ownership graph, with one-click reassign and per-owner rate
-  limits.
-- Approval-gated patches: the LLM drafts from the owner's reply; nothing enters the corpus without
-  human sign-off.
-- **Next.js frontend** (the one shared portfolio design system): the answer + warranty-label UI, the
-  gap-ticket inbox for owners, and the three-question demo view. This is the phase the UI arrives —
-  earlier phases are API-only.
+**Not built, deliberately named:** the self-healing loop — per-query telemetry, demand-
+ranked gap tickets, owner routing over the ownership graph, approval-gated patches. That
+is the product's novelty claim and it remains future work; nothing on the live page
+implies otherwise.
 
 ## Phase 3 — Bitemporal memory + conflict honesty
 

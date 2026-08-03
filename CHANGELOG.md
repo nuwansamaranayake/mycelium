@@ -7,6 +7,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-08-03
+
+Public surface: demo sessions and the frontend. Minor bump.
+
+### Added
+- Demo sessions on the groundwork kit: two real principals with their own bearer tokens
+  (the UI switcher changes which bearer is sent — production auth path, no demo-only
+  semantics), four seeded documents (restricted / stale / fresh / disagreeing), query
+  budgets in redis, session rate limits.
+- `/query` reports `acl.visible_documents` / `excluded_documents` /
+  `filtered_before_scoring`, computed from the same set retrieval filters on before
+  scoring.
+- `/answers` accepts the query owner's principal token (was admin-only), so demo sessions
+  can see the cited-answer view; the tenant boundary holds on the expensive path, tested.
+- The frontend: Next.js static export on the shared webshell, served by FastAPI. The ACL
+  refusal screen, freshness chips, the honest miss, per-sentence citations with ungrounded
+  flagged.
+- Demo-scoped PDF/docx upload, tenant-forced (prefixed title, tenant-only ACL, never
+  wildcard).
+- Estate A2: one version source via `groundwork.build_version()`.
+
+### Fixed
+- **Wildcard ACLs no longer reach demo tenants.** Found by the local E2E: the seeded miss
+  question matched a dev-fixture document through its `*` grant, so a demo principal could
+  retrieve every wildcard document in the corpus — on production that would have surfaced
+  estate smoke documents in demo answers. A wildcard means "any member of the
+  organization"; a demo visitor is not one.
+
+### Measured (local compose E2E, two consecutive runs, 10/10)
+- ACL refusal with counted pre-scoring exclusion; stale/fresh disagreement on the deploy
+  question; zero-passage honest miss; cited synthesis with the principal's own token;
+  cross-principal 401s. `evidence/2026-08-03-local-e2e.txt`.
+
 ## [0.2.3] - 2026-07-27
 
 ### Added

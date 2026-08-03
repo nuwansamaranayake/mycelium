@@ -1,17 +1,21 @@
 # Mycelium
 
-> **Status: Phase 1 core loop released (v0.2.3).** Two keyless connectors (folder
-> ingester and direct upload), hybrid BM25 plus embedding retrieval with rank fusion, ACLs
-> enforced before scoring, citations with deterministic freshness labels, and a key-gated
-> LLM answer-synthesis stage. The deterministic eval suite is a required CI check.
-> [ROADMAP.md](ROADMAP.md) shows what exists today versus what is next.
+**Live demo: <https://mycelium.aigniteconsulting.ai>** — open it, start a session (no
+sign-up), ask as the broad principal, switch to the restricted one, and watch the
+restricted document leave both the answer and the sources, with the exclusion counted
+on screen before scoring.
 
-**Internal knowledge-base search with self-healing bitemporal memory.**
+> **Status: Phase 2 demo surface deployed (v0.3.0).** Phase 1's engine (hybrid retrieval,
+> pre-scoring ACLs, deterministic freshness labels, cited synthesis) plus credential-less
+> demo sessions on the shared estate kit and the frontend. **Phase 2 is partial:** the
+> self-healing loop — telemetry, gap tickets, owner routing, approval-gated patches — is
+> designed but not built, and [ROADMAP.md](ROADMAP.md) says exactly that. Conflict
+> detection (`NEEDS_RESOLUTION`) is Phase 3.
 
-Search that repairs the knowledge base and remembers what was true when. Every failed query is a
-work order. Every answer carries a warranty label. Conflicting documents surface as disagreements
-instead of blending into confident nonsense, and "what did the policy say in February?" is a
-first-class query.
+Internal knowledge-base search where access control runs **before retrieval scoring**, not
+after generation. Measured on the golden corpus: 0 ACL leaks, citation validity 1.0,
+freshness label accuracy 1.0, paraphrase stability 1.0 — synthetic corpus, so real-recall
+is not measured, and the page says so.
 
 ## What it is
 
