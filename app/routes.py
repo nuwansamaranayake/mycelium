@@ -24,7 +24,8 @@ from datetime import datetime, timezone
 
 import sqlalchemy as sa
 from groundwork import DemoRefused
-from fastapi import APIRouter, Header, HTTPException, Request
+from fastapi import (APIRouter, File, Form, Header, HTTPException, Request,
+                     UploadFile)
 from groundwork import BaseConfig, Env, LLMGateway
 from pydantic import BaseModel, Field
 
@@ -418,3 +419,72 @@ def open_demo_session(request: Request):
     return {"token": token, "token_type": "bearer",
             "expires_in": settings.demo_session_ttl_seconds,
             "request_budget": settings.demo_request_budget, **seeded}
+
+
+@router.post("/documents/upload", status_code=201)
+async def upload_document_file(title: str = Form(...), file: UploadFile = File(...),
+                               authorization: str | None = Header(default=None)):
+    """PDF/docx upload (D5). Admin uploads land as given; a demo session's upload is
+    forced into its tenant: title prefixed, ACL exactly the session's two principals —
+    never a wildcard, so it can never leak across tenants and retention reclaims it."""
+    token = settings.smoke_test_token
+    raw = (authorization or "")
+    raw = raw[7:] if raw.startswith("Bearer ") else ""
+    scope = None
+    if token and raw == token:
+        pass
+    elif raw:
+        try:
+            scope = demo.kit().check_session(raw)
+        except DemoRefused as e:
+            raise HTTPException(status_code=e.status_code, detail=e.detail)
+        if scope is None:
+            raise HTTPException(status_code=401, detail="missing or invalid bearer token")
+    elif not _auth_disabled():
+        raise HTTPException(status_code=401, detail="missing bearer token")
+
+    data = await file.read()
+    if len(data) > 2_000_000:
+        raise HTTPException(status_code=413, detail="file exceeds the 2 MB upload limit")
+    fn = (file.filename or "").lower()
+    try:
+        if fn.endswith(".pdf"):
+            from pypdf import PdfReader
+            import io as _io
+            text = "\n".join((p.extract_text() or "")
+                             for p in PdfReader(_io.BytesIO(data)).pages)
+        elif fn.endswith(".docx"):
+            from docx import Document as DocxDocument
+            import io as _io
+            text = "\n".join(p.text for p in DocxDocument(_io.BytesIO(data)).paragraphs)
+        else:
+            raise HTTPException(status_code=415, detail="PDF or docx only")
+    except HTTPException:
+        raise
+    except Exception:
+        raise HTTPException(status_code=422,
+                            detail="the file could not be parsed as PDF or docx")
+    if not text.strip():
+        raise HTTPException(status_code=422,
+                            detail="no extractable text; scanned images need OCR, which "
+                                   "this demo does not run")
+
+    if scope:
+        with db.get_session() as s:
+            names = [row.name for row in s.execute(
+                sa.select(db.principals.c.name)
+                .where(db.principals.c.name.like(f"{scope}%"))).all()]
+        if not names:
+            raise HTTPException(status_code=403,
+                                detail="this demo session has no principals to grant")
+        title = f"{scope}{title}"
+        allowed = names
+    else:
+        allowed = ["*"]
+
+    from datetime import datetime as _dt, timezone as _tz
+    with db.get_session() as s, s.begin():
+        did, chunks = _store_document(
+            s, external_id=None, title=title, text=text, source=f"upload:{fn}",
+            doc_timestamp=_dt.now(_tz.utc), allowed_principals=allowed)
+    return {"document_id": did, "chunks": chunks, "chars": len(text)}
