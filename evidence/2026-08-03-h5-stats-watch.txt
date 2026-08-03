@@ -1,0 +1,425 @@
+# H5: one-hour docker stats watch after the mycelium + four-app deploy wave.
+# 60 samples, 02:38:07Z..03:39:52Z, 2026-08-03. Verdict: no rollback condition.
+# mycelium-service peak 118MiB (slim image, no torch); careercompiler-service peak
+# 714.9MiB of its 1500MiB cap; beacon-gom-backend peak 257.8MiB, unconstrained.
+# Host available memory at close: ~8.0 GB. mycelium /health 200.
+
+02:38:07Z
+mycelium-service-1 114.1MiB / 768MiB 0.16%
+careercompiler-service-1 714.9MiB / 1.465GiB 0.44%
+mycelium-minio-1 83.89MiB / 384MiB 0.03%
+mycelium-db-1 24.7MiB / 512MiB 0.00%
+mycelium-redis-1 3.574MiB / 192MiB 0.30%
+beacon-gom-backend-1 231.2MiB / 15.62GiB 0.17%
+02:39:10Z
+mycelium-service-1 115.9MiB / 768MiB 0.19%
+careercompiler-service-1 543.8MiB / 1.465GiB 0.18%
+mycelium-minio-1 82.67MiB / 384MiB 0.00%
+mycelium-db-1 24.47MiB / 512MiB 0.00%
+mycelium-redis-1 3.797MiB / 192MiB 0.29%
+beacon-gom-backend-1 234MiB / 15.62GiB 0.19%
+02:40:13Z
+mycelium-service-1 115.9MiB / 768MiB 0.16%
+careercompiler-service-1 543.8MiB / 1.465GiB 0.25%
+mycelium-minio-1 82.66MiB / 384MiB 0.04%
+mycelium-db-1 24.47MiB / 512MiB 0.00%
+mycelium-redis-1 3.797MiB / 192MiB 0.32%
+beacon-gom-backend-1 234.1MiB / 15.62GiB 0.29%
+02:41:17Z
+mycelium-service-1 115.9MiB / 768MiB 0.24%
+careercompiler-service-1 543.8MiB / 1.465GiB 0.15%
+mycelium-minio-1 82.66MiB / 384MiB 0.03%
+mycelium-db-1 24.47MiB / 512MiB 0.02%
+mycelium-redis-1 3.797MiB / 192MiB 0.31%
+beacon-gom-backend-1 239.6MiB / 15.62GiB 0.17%
+02:42:20Z
+mycelium-service-1 115.9MiB / 768MiB 0.17%
+careercompiler-service-1 543.8MiB / 1.465GiB 0.15%
+mycelium-minio-1 82.66MiB / 384MiB 0.10%
+mycelium-db-1 24.47MiB / 512MiB 0.00%
+mycelium-redis-1 3.793MiB / 192MiB 0.26%
+beacon-gom-backend-1 233MiB / 15.62GiB 0.14%
+02:43:23Z
+mycelium-service-1 117.4MiB / 768MiB 0.19%
+careercompiler-service-1 543.8MiB / 1.465GiB 0.18%
+mycelium-minio-1 82.67MiB / 384MiB 0.01%
+mycelium-db-1 26.41MiB / 512MiB 2.30%
+mycelium-redis-1 3.793MiB / 192MiB 2.51%
+beacon-gom-backend-1 257MiB / 15.62GiB 0.00%
+02:44:25Z
+mycelium-service-1 117.4MiB / 768MiB 0.18%
+careercompiler-service-1 543.8MiB / 1.465GiB 0.35%
+mycelium-minio-1 82.68MiB / 384MiB 0.03%
+mycelium-db-1 24.47MiB / 512MiB 0.00%
+mycelium-redis-1 3.793MiB / 192MiB 0.30%
+beacon-gom-backend-1 233MiB / 15.62GiB 0.18%
+02:45:28Z
+mycelium-service-1 117.6MiB / 768MiB 0.18%
+careercompiler-service-1 543.8MiB / 1.465GiB 0.22%
+mycelium-minio-1 82.66MiB / 384MiB 0.04%
+mycelium-db-1 24.47MiB / 512MiB 0.00%
+mycelium-redis-1 3.797MiB / 192MiB 0.46%
+beacon-gom-backend-1 233MiB / 15.62GiB 0.16%
+02:46:31Z
+mycelium-service-1 117.6MiB / 768MiB 0.17%
+careercompiler-service-1 543.8MiB / 1.465GiB 0.17%
+mycelium-minio-1 82.66MiB / 384MiB 0.00%
+mycelium-db-1 24.47MiB / 512MiB 0.00%
+mycelium-redis-1 3.797MiB / 192MiB 3.22%
+beacon-gom-backend-1 233MiB / 15.62GiB 0.18%
+02:47:34Z
+mycelium-service-1 117.6MiB / 768MiB 0.16%
+careercompiler-service-1 543.8MiB / 1.465GiB 0.16%
+mycelium-minio-1 82.67MiB / 384MiB 0.14%
+mycelium-db-1 24.48MiB / 512MiB 5.57%
+mycelium-redis-1 3.797MiB / 192MiB 0.30%
+beacon-gom-backend-1 233MiB / 15.62GiB 0.17%
+02:48:36Z
+mycelium-service-1 117.6MiB / 768MiB 0.26%
+careercompiler-service-1 543.8MiB / 1.465GiB 0.16%
+mycelium-minio-1 82.68MiB / 384MiB 0.02%
+mycelium-db-1 24.48MiB / 512MiB 0.70%
+mycelium-redis-1 3.797MiB / 192MiB 0.31%
+beacon-gom-backend-1 233MiB / 15.62GiB 0.17%
+02:49:39Z
+mycelium-service-1 117.6MiB / 768MiB 0.19%
+mycelium-minio-1 82.69MiB / 384MiB 0.28%
+mycelium-db-1 24.48MiB / 512MiB 0.00%
+mycelium-redis-1 3.793MiB / 192MiB 3.19%
+beacon-gom-backend-1 233MiB / 15.62GiB 0.19%
+02:50:42Z
+careercompiler-service-1 169.3MiB / 1.465GiB 0.18%
+mycelium-service-1 117.6MiB / 768MiB 0.19%
+mycelium-minio-1 82.67MiB / 384MiB 0.11%
+mycelium-db-1 24.48MiB / 512MiB 0.00%
+mycelium-redis-1 3.793MiB / 192MiB 0.30%
+beacon-gom-backend-1 233MiB / 15.62GiB 0.18%
+02:51:45Z
+careercompiler-service-1 169.3MiB / 1.465GiB 0.32%
+mycelium-service-1 117.6MiB / 768MiB 0.19%
+mycelium-minio-1 82.67MiB / 384MiB 0.00%
+mycelium-db-1 24.48MiB / 512MiB 6.56%
+mycelium-redis-1 3.793MiB / 192MiB 0.33%
+beacon-gom-backend-1 233MiB / 15.62GiB 0.19%
+02:52:47Z
+careercompiler-service-1 177.2MiB / 1.465GiB 0.19%
+mycelium-service-1 117.6MiB / 768MiB 0.18%
+mycelium-minio-1 82.68MiB / 384MiB 0.07%
+mycelium-db-1 24.48MiB / 512MiB 0.00%
+mycelium-redis-1 3.797MiB / 192MiB 2.92%
+beacon-gom-backend-1 233MiB / 15.62GiB 0.39%
+02:53:50Z
+careercompiler-service-1 177.2MiB / 1.465GiB 0.18%
+mycelium-service-1 117.6MiB / 768MiB 0.18%
+mycelium-minio-1 82.68MiB / 384MiB 0.17%
+mycelium-db-1 24.48MiB / 512MiB 0.00%
+mycelium-redis-1 3.793MiB / 192MiB 0.31%
+beacon-gom-backend-1 233MiB / 15.62GiB 0.18%
+02:54:53Z
+careercompiler-service-1 198.5MiB / 1.465GiB 0.17%
+mycelium-service-1 117.6MiB / 768MiB 0.18%
+mycelium-minio-1 82.69MiB / 384MiB 0.00%
+mycelium-db-1 24.48MiB / 512MiB 0.00%
+mycelium-redis-1 3.793MiB / 192MiB 0.38%
+beacon-gom-backend-1 233MiB / 15.62GiB 0.17%
+02:55:56Z
+careercompiler-service-1 578.7MiB / 1.465GiB 0.19%
+mycelium-service-1 117.6MiB / 768MiB 0.16%
+mycelium-minio-1 82.67MiB / 384MiB 0.04%
+mycelium-db-1 24.48MiB / 512MiB 0.01%
+mycelium-redis-1 3.793MiB / 192MiB 0.31%
+beacon-gom-backend-1 233MiB / 15.62GiB 0.16%
+02:56:58Z
+careercompiler-service-1 578.7MiB / 1.465GiB 0.72%
+mycelium-service-1 117.6MiB / 768MiB 0.15%
+mycelium-minio-1 82.68MiB / 384MiB 0.02%
+mycelium-db-1 24.48MiB / 512MiB 0.00%
+mycelium-redis-1 3.793MiB / 192MiB 0.32%
+beacon-gom-backend-1 233MiB / 15.62GiB 0.24%
+02:58:01Z
+careercompiler-service-1 579.1MiB / 1.465GiB 0.19%
+mycelium-service-1 117.8MiB / 768MiB 0.23%
+mycelium-minio-1 82.68MiB / 384MiB 0.09%
+mycelium-db-1 24.51MiB / 512MiB 0.02%
+mycelium-redis-1 3.801MiB / 192MiB 0.33%
+beacon-gom-backend-1 233MiB / 15.62GiB 0.34%
+02:59:04Z
+careercompiler-service-1 579.1MiB / 1.465GiB 0.17%
+mycelium-service-1 117.8MiB / 768MiB 0.15%
+mycelium-minio-1 82.69MiB / 384MiB 0.13%
+mycelium-db-1 24.52MiB / 512MiB 0.00%
+mycelium-redis-1 3.801MiB / 192MiB 0.26%
+beacon-gom-backend-1 233MiB / 15.62GiB 0.17%
+03:00:06Z
+careercompiler-service-1 579.1MiB / 1.465GiB 0.28%
+mycelium-service-1 117.8MiB / 768MiB 0.31%
+mycelium-minio-1 82.7MiB / 384MiB 0.07%
+mycelium-db-1 24.52MiB / 512MiB 10.57%
+mycelium-redis-1 3.801MiB / 192MiB 3.49%
+beacon-gom-backend-1 257.8MiB / 15.62GiB 0.00%
+03:01:09Z
+careercompiler-service-1 580.3MiB / 1.465GiB 0.18%
+mycelium-service-1 117.8MiB / 768MiB 0.19%
+mycelium-minio-1 82.68MiB / 384MiB 0.04%
+mycelium-db-1 24.52MiB / 512MiB 7.90%
+mycelium-redis-1 3.801MiB / 192MiB 0.41%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.19%
+03:02:12Z
+careercompiler-service-1 580.3MiB / 1.465GiB 0.23%
+mycelium-service-1 117.8MiB / 768MiB 0.17%
+mycelium-minio-1 82.68MiB / 384MiB 0.08%
+mycelium-db-1 24.52MiB / 512MiB 0.00%
+mycelium-redis-1 3.801MiB / 192MiB 0.32%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.17%
+03:03:15Z
+careercompiler-service-1 580.3MiB / 1.465GiB 0.28%
+mycelium-service-1 117.8MiB / 768MiB 0.19%
+mycelium-minio-1 82.69MiB / 384MiB 0.00%
+mycelium-db-1 24.52MiB / 512MiB 0.00%
+mycelium-redis-1 3.801MiB / 192MiB 2.61%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.18%
+03:04:18Z
+careercompiler-service-1 580.3MiB / 1.465GiB 0.18%
+mycelium-service-1 117.8MiB / 768MiB 0.15%
+mycelium-minio-1 82.69MiB / 384MiB 0.05%
+mycelium-db-1 24.52MiB / 512MiB 0.00%
+mycelium-redis-1 3.797MiB / 192MiB 0.28%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.17%
+03:05:20Z
+careercompiler-service-1 580.3MiB / 1.465GiB 0.19%
+mycelium-service-1 117.8MiB / 768MiB 0.16%
+mycelium-minio-1 82.67MiB / 384MiB 0.00%
+mycelium-db-1 24.52MiB / 512MiB 6.60%
+mycelium-redis-1 3.797MiB / 192MiB 0.31%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.14%
+03:06:23Z
+careercompiler-service-1 580.3MiB / 1.465GiB 0.20%
+mycelium-service-1 117.8MiB / 768MiB 0.21%
+mycelium-minio-1 82.68MiB / 384MiB 0.00%
+mycelium-db-1 24.52MiB / 512MiB 0.00%
+mycelium-redis-1 3.797MiB / 192MiB 2.69%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.17%
+03:07:26Z
+careercompiler-service-1 580.3MiB / 1.465GiB 0.18%
+mycelium-service-1 117.8MiB / 768MiB 0.18%
+mycelium-minio-1 82.68MiB / 384MiB 0.03%
+mycelium-db-1 24.52MiB / 512MiB 0.00%
+mycelium-redis-1 3.797MiB / 192MiB 0.30%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.16%
+03:08:29Z
+careercompiler-service-1 580.3MiB / 1.465GiB 0.17%
+mycelium-service-1 117.8MiB / 768MiB 0.18%
+mycelium-minio-1 82.69MiB / 384MiB 0.00%
+mycelium-db-1 24.52MiB / 512MiB 5.96%
+mycelium-redis-1 3.797MiB / 192MiB 0.25%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.16%
+03:09:31Z
+careercompiler-service-1 580.3MiB / 1.465GiB 0.15%
+mycelium-service-1 117.8MiB / 768MiB 0.18%
+mycelium-minio-1 82.7MiB / 384MiB 0.05%
+mycelium-db-1 24.52MiB / 512MiB 0.01%
+mycelium-redis-1 3.797MiB / 192MiB 2.61%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.18%
+03:10:34Z
+careercompiler-service-1 580.3MiB / 1.465GiB 0.14%
+mycelium-service-1 117.8MiB / 768MiB 0.32%
+mycelium-minio-1 82.68MiB / 384MiB 0.11%
+mycelium-db-1 24.52MiB / 512MiB 0.00%
+mycelium-redis-1 3.797MiB / 192MiB 0.32%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.16%
+03:11:37Z
+careercompiler-service-1 580.3MiB / 1.465GiB 0.17%
+mycelium-service-1 117.8MiB / 768MiB 0.24%
+mycelium-minio-1 82.68MiB / 384MiB 0.02%
+mycelium-db-1 24.52MiB / 512MiB 1.12%
+mycelium-redis-1 3.797MiB / 192MiB 0.35%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.17%
+03:12:39Z
+careercompiler-service-1 580.3MiB / 1.465GiB 0.19%
+mycelium-service-1 117.8MiB / 768MiB 0.18%
+mycelium-minio-1 82.7MiB / 384MiB 0.29%
+mycelium-db-1 25.71MiB / 512MiB 0.88%
+mycelium-redis-1 3.797MiB / 192MiB 0.27%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.17%
+03:13:42Z
+careercompiler-service-1 580.3MiB / 1.465GiB 0.21%
+mycelium-service-1 117.8MiB / 768MiB 0.16%
+mycelium-minio-1 82.7MiB / 384MiB 0.06%
+mycelium-db-1 24.52MiB / 512MiB 0.00%
+mycelium-redis-1 3.797MiB / 192MiB 0.27%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.17%
+03:14:45Z
+careercompiler-service-1 580.3MiB / 1.465GiB 0.18%
+mycelium-service-1 117.8MiB / 768MiB 0.19%
+mycelium-minio-1 82.71MiB / 384MiB 0.00%
+mycelium-db-1 24.52MiB / 512MiB 0.00%
+mycelium-redis-1 3.797MiB / 192MiB 0.28%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.17%
+03:15:48Z
+careercompiler-service-1 580.3MiB / 1.465GiB 0.21%
+mycelium-service-1 117.8MiB / 768MiB 0.19%
+mycelium-minio-1 82.69MiB / 384MiB 0.04%
+mycelium-db-1 24.52MiB / 512MiB 0.01%
+mycelium-redis-1 3.797MiB / 192MiB 0.29%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.17%
+03:16:51Z
+careercompiler-service-1 580.3MiB / 1.465GiB 0.20%
+mycelium-service-1 117.8MiB / 768MiB 0.19%
+mycelium-minio-1 82.69MiB / 384MiB 0.11%
+mycelium-db-1 24.52MiB / 512MiB 8.01%
+mycelium-redis-1 3.797MiB / 192MiB 3.15%
+beacon-gom-backend-1 257.8MiB / 15.62GiB 0.00%
+03:17:53Z
+careercompiler-service-1 580.3MiB / 1.465GiB 0.18%
+mycelium-service-1 117.8MiB / 768MiB 0.17%
+mycelium-minio-1 82.7MiB / 384MiB 0.04%
+mycelium-db-1 24.52MiB / 512MiB 0.00%
+mycelium-redis-1 3.797MiB / 192MiB 0.39%
+beacon-gom-backend-1 248.6MiB / 15.62GiB 13.56%
+03:18:56Z
+careercompiler-service-1 580.3MiB / 1.465GiB 0.18%
+mycelium-service-1 117.8MiB / 768MiB 0.15%
+mycelium-minio-1 82.7MiB / 384MiB 0.03%
+mycelium-db-1 24.52MiB / 512MiB 0.66%
+mycelium-redis-1 3.797MiB / 192MiB 0.33%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.16%
+03:19:59Z
+careercompiler-service-1 580.3MiB / 1.465GiB 0.25%
+mycelium-service-1 117.8MiB / 768MiB 0.22%
+mycelium-minio-1 82.71MiB / 384MiB 0.00%
+mycelium-db-1 24.52MiB / 512MiB 0.00%
+mycelium-redis-1 4.047MiB / 192MiB 3.35%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.21%
+03:21:02Z
+careercompiler-service-1 580.3MiB / 1.465GiB 0.33%
+mycelium-service-1 117.8MiB / 768MiB 0.20%
+mycelium-minio-1 82.73MiB / 384MiB 0.20%
+mycelium-db-1 24.52MiB / 512MiB 6.99%
+mycelium-redis-1 3.797MiB / 192MiB 0.28%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.18%
+03:22:05Z
+careercompiler-service-1 580.3MiB / 1.465GiB 0.25%
+mycelium-service-1 117.8MiB / 768MiB 0.21%
+mycelium-minio-1 82.74MiB / 384MiB 0.13%
+mycelium-db-1 24.52MiB / 512MiB 0.00%
+mycelium-redis-1 3.797MiB / 192MiB 0.34%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.19%
+03:23:08Z
+careercompiler-service-1 580.3MiB / 1.465GiB 0.27%
+mycelium-service-1 117.8MiB / 768MiB 0.14%
+mycelium-minio-1 82.75MiB / 384MiB 0.06%
+mycelium-db-1 24.52MiB / 512MiB 0.00%
+mycelium-redis-1 3.797MiB / 192MiB 0.24%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.15%
+03:24:10Z
+careercompiler-service-1 580.3MiB / 1.465GiB 0.25%
+mycelium-service-1 117.8MiB / 768MiB 0.19%
+mycelium-minio-1 82.75MiB / 384MiB 0.00%
+mycelium-db-1 24.52MiB / 512MiB 5.89%
+mycelium-redis-1 3.797MiB / 192MiB 0.33%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.16%
+03:25:13Z
+careercompiler-service-1 580.3MiB / 1.465GiB 0.23%
+mycelium-service-1 117.8MiB / 768MiB 0.22%
+mycelium-minio-1 82.73MiB / 384MiB 0.06%
+mycelium-db-1 24.52MiB / 512MiB 0.00%
+mycelium-redis-1 3.801MiB / 192MiB 3.95%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.18%
+03:26:16Z
+careercompiler-service-1 580.3MiB / 1.465GiB 0.17%
+mycelium-service-1 117.8MiB / 768MiB 0.21%
+mycelium-minio-1 82.74MiB / 384MiB 0.04%
+mycelium-db-1 24.52MiB / 512MiB 0.81%
+mycelium-redis-1 3.797MiB / 192MiB 0.33%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.16%
+03:27:19Z
+careercompiler-service-1 580.3MiB / 1.465GiB 0.18%
+mycelium-service-1 117.8MiB / 768MiB 0.19%
+mycelium-minio-1 82.75MiB / 384MiB 0.09%
+mycelium-db-1 24.52MiB / 512MiB 0.00%
+mycelium-redis-1 3.797MiB / 192MiB 0.34%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.19%
+03:28:22Z
+careercompiler-service-1 152.6MiB / 1.465GiB 0.25%
+mycelium-service-1 117.8MiB / 768MiB 0.22%
+mycelium-minio-1 82.75MiB / 384MiB 0.09%
+mycelium-db-1 24.52MiB / 512MiB 6.30%
+mycelium-redis-1 3.797MiB / 192MiB 2.56%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.17%
+03:29:24Z
+careercompiler-service-1 160.8MiB / 1.465GiB 0.43%
+mycelium-service-1 117.8MiB / 768MiB 0.17%
+mycelium-minio-1 82.76MiB / 384MiB 0.02%
+mycelium-db-1 24.52MiB / 512MiB 0.01%
+mycelium-redis-1 3.797MiB / 192MiB 0.34%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.14%
+03:30:27Z
+careercompiler-service-1 545.1MiB / 1.465GiB 6.46%
+mycelium-service-1 117.8MiB / 768MiB 0.17%
+mycelium-minio-1 82.74MiB / 384MiB 0.02%
+mycelium-db-1 24.52MiB / 512MiB 0.00%
+mycelium-redis-1 3.797MiB / 192MiB 0.35%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.19%
+03:31:30Z
+careercompiler-service-1 545.7MiB / 1.465GiB 0.18%
+mycelium-service-1 117.8MiB / 768MiB 0.17%
+mycelium-minio-1 82.75MiB / 384MiB 0.03%
+mycelium-db-1 24.52MiB / 512MiB 0.00%
+mycelium-redis-1 3.797MiB / 192MiB 0.30%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.17%
+03:32:33Z
+careercompiler-service-1 545.9MiB / 1.465GiB 0.35%
+mycelium-service-1 117.8MiB / 768MiB 0.18%
+mycelium-minio-1 82.75MiB / 384MiB 0.04%
+mycelium-db-1 24.52MiB / 512MiB 6.16%
+mycelium-redis-1 3.797MiB / 192MiB 0.27%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.17%
+03:33:35Z
+careercompiler-service-1 546.5MiB / 1.465GiB 0.15%
+mycelium-service-1 118MiB / 768MiB 0.14%
+mycelium-minio-1 82.76MiB / 384MiB 0.05%
+mycelium-db-1 24.54MiB / 512MiB 0.00%
+mycelium-redis-1 3.801MiB / 192MiB 0.29%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.16%
+03:34:38Z
+careercompiler-service-1 546.5MiB / 1.465GiB 0.15%
+mycelium-service-1 118MiB / 768MiB 0.19%
+mycelium-minio-1 82.76MiB / 384MiB 0.03%
+mycelium-db-1 24.54MiB / 512MiB 0.00%
+mycelium-redis-1 3.805MiB / 192MiB 2.76%
+beacon-gom-backend-1 257.8MiB / 15.62GiB 0.00%
+03:35:41Z
+careercompiler-service-1 546.5MiB / 1.465GiB 0.15%
+mycelium-service-1 118MiB / 768MiB 0.28%
+mycelium-minio-1 82.75MiB / 384MiB 0.00%
+mycelium-db-1 24.54MiB / 512MiB 0.00%
+mycelium-redis-1 3.805MiB / 192MiB 0.33%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.17%
+03:36:44Z
+careercompiler-service-1 546.7MiB / 1.465GiB 0.17%
+mycelium-service-1 118MiB / 768MiB 0.16%
+mycelium-minio-1 82.76MiB / 384MiB 0.12%
+mycelium-db-1 24.54MiB / 512MiB 0.01%
+mycelium-redis-1 3.805MiB / 192MiB 0.29%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.19%
+03:37:46Z
+careercompiler-service-1 546.7MiB / 1.465GiB 0.17%
+mycelium-service-1 118MiB / 768MiB 0.19%
+mycelium-minio-1 82.76MiB / 384MiB 0.03%
+mycelium-db-1 24.54MiB / 512MiB 0.00%
+mycelium-redis-1 3.801MiB / 192MiB 2.68%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.17%
+03:38:49Z
+careercompiler-service-1 546.7MiB / 1.465GiB 0.18%
+mycelium-service-1 118MiB / 768MiB 0.15%
+mycelium-minio-1 82.77MiB / 384MiB 0.07%
+mycelium-db-1 24.54MiB / 512MiB 0.01%
+mycelium-redis-1 3.801MiB / 192MiB 0.31%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.19%
+03:39:52Z
+careercompiler-service-1 546.8MiB / 1.465GiB 0.17%
+mycelium-service-1 118MiB / 768MiB 0.17%
+mycelium-minio-1 82.77MiB / 384MiB 0.07%
+mycelium-db-1 24.54MiB / 512MiB 5.59%
+mycelium-redis-1 3.801MiB / 192MiB 0.27%
+beacon-gom-backend-1 233.7MiB / 15.62GiB 0.16%
