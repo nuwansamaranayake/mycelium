@@ -58,7 +58,7 @@ retrieval scoring, visible in the UI. Cited answers, warranty labels, honest mis
 | B1/B3 demokit extracted + proven | **done** | groundwork `2ae0847`; 6 kit tests (403/429/expiry/rate/prefix shape) |
 | B4 CC refactor onto the kit | **done** | CC `2f0452b`; suite passed unchanged, which is B4's proof |
 | B5 webshell extracted | **done** | groundwork/webshell/ (css, layout, lib/session.ts) |
-| C mycelium demo access + seed (restricted/stale/fresh/conflicting docs, 2 principals) | todo | |
+| C demo access + seed | **done** | `586dd20` + answers-auth commit; 40 tests incl. the ACL refusal with positive anchor |
 | D1 ACL refusal screen | todo | |
 | D2–D8 | todo | |
 | G smoke extension + production negative (restricted doc must not leak, live) | todo | |
@@ -116,3 +116,38 @@ retrieval scoring, visible in the UI. Cited answers, warranty labels, honest mis
   question: parental leave policy (no doc). D1 needs the /query response to carry an
   `excluded_by_acl` count sourced from the retrieval trace — check /query body + engine
   filter position when wiring.
+
+## D-wave facts (shapes verified, do not re-read)
+
+- /query response: {query_id, as_of, results:[{passage_id, document_id, title, text, span,
+  rank, bm25/cosine/fused scores, freshness:{label, age_days}}], acl:{principal,
+  visible_documents, excluded_documents, filtered_before_scoring}}. Off-corpus questions
+  return results=[] (measured: parental leave + nonsense -> []; vpn/deploys -> 0.033) —
+  the honest miss is deterministic at retrieval; the UI gates on empty results and never
+  calls /answers (which also 422s on empty retrievals as backstop).
+- /answers POST {query_id} with the QUERY OWNER's principal token -> {answer_id, text,
+  ungrounded_count, model, sentences:[{text, grounded, passage_ids}]}. Show ungrounded
+  sentences flagged; citations resolve to passages already held from /query results.
+- Mycelium EVAL limits block (verbatim for the landing, gate asserts): "On a golden corpus
+  of synthetic documents with planted timestamps and access rules, retrieval leaks nothing
+  across principal boundaries (0 ACL leaks), every citation resolves to text that exists
+  in the cited passage (1.0), every freshness label matches the planted timestamp (1.0),
+  and the retrieved document set is stable across query paraphrases (jaccard 1.0 against a
+  0.60 bound); the corpus is synthetic, so it does not measure recall on a real knowledge
+  base."
+- Web app: mirror CC's proven structure exactly (package.json/tsconfig/next.config with
+  output:'export'; app/globals.css + layout from groundwork/webshell with provenance
+  header; lib from webshell/lib/session.ts). Pages: landing (hero: the ACL refusal story,
+  limits verbatim, "not for" and D8 novelty claim scoped to the July 2026 survey) and
+  /demo (principal switcher = which bearer is sent; suggested-question chips; ACL banner
+  from acl.excluded_documents; freshness chips with age_days + "label attached by
+  deterministic code"; honest-miss panel on results=[]; synthesize button -> sentences
+  with [n] citations, ungrounded flagged; citation click -> passage panel; upload D5 can
+  reuse /documents with demo scope — NOT yet wired for demo tokens, add or defer with a
+  BLOCKED line). main.py serving + Dockerfile web stage: copy CC's (no torch here — image
+  stays slim). Then contracts.md re-derive + CC-style literal test port, truth-layer doc
+  to docs/agent-legibility/ BEFORE copy lands, local compose E2E, G smoke extension
+  (mycelium loop + demo cross-tenant 403 + no-token 401s + restricted-doc negative), H
+  wave (push all repos, CI green -> tags: groundwork done; CC v0.3.2; mycelium v0.3.0;
+  portfolio-ops minor; snapshot; deploy mycelium (+CC rebuild for B4? CC deploy optional
+  — code-only refactor, same behavior; decide at H), estate smoke, walkthrough, 1h stats).
