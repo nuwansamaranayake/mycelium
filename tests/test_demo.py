@@ -116,3 +116,24 @@ def test_session_creation_is_rate_limited(client, monkeypatch):
     _session(client)
     _session(client)
     assert client.post("/api/v1/demo/session").status_code == 429
+
+
+def test_a_principal_can_synthesize_only_their_own_answers(client, monkeypatch):
+    """The demo needs cited answers without the admin token, and the tenant boundary
+    must hold on the expensive path too. The gateway is stubbed: auth is the subject."""
+    from app import routes
+
+    class GW:
+        def complete(self, **kw):
+            raise AssertionError("synthesis must not be reached in these refusal cases")
+    monkeypatch.setattr(routes, "_gateway", lambda: GW())
+    s = _session(client)
+    broad = next(p for p in s["principals"] if p["role"] == "broad")
+    restricted = next(p for p in s["principals"] if p["role"] == "restricted")
+    qid = _query(client, broad, "How do I get VPN access?").json()["query_id"]
+
+    r = client.post("/api/v1/answers", json={"query_id": qid},
+                    headers={"Authorization": f"Bearer {restricted['token']}"})
+    assert r.status_code == 401, "another principal must not synthesize my answer"
+    r = client.post("/api/v1/answers", json={"query_id": qid})
+    assert r.status_code == 401, "no token stays 401 (estate invariant)"

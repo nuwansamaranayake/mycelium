@@ -297,7 +297,10 @@ def run_query(body: QueryIn, authorization: str | None = Header(default=None)):
 
 @router.post("/answers", status_code=201)
 def create_answer(body: AnswerIn, authorization: str | None = Header(default=None)):
-    _auth(authorization)
+    """Admin may synthesize any answer; a principal may synthesize answers to their OWN
+    queries (the bearer must be that principal's token). Without this, demo sessions could
+    retrieve but never see the cited-answer view. Demo principals spend query budget here
+    too — synthesis is the expensive call."""
     gateway = _gateway()
     if not settings.llm_model_reasoning:
         raise HTTPException(status_code=503,
@@ -314,6 +317,24 @@ def create_answer(body: AnswerIn, authorization: str | None = Header(default=Non
             .join(db.passages, db.retrievals.c.passage_id == db.passages.c.id)
             .where(db.retrievals.c.query_id == body.query_id)
             .order_by(db.retrievals.c.rank)).mappings().all()
+    # Auth against the query's owner (or admin), now that the owner is known.
+    token = settings.smoke_test_token
+    raw = (authorization or "")
+    raw = raw[7:] if raw.startswith("Bearer ") else ""
+    if _auth_disabled():
+        pass  # development semantics, enforced non-production by _auth_disabled
+    elif not (token and raw == token):
+        with db.get_session() as s:
+            owner = s.execute(sa.select(db.principals.c.token)
+                              .where(db.principals.c.name == q["principal"])).first()
+        if owner is None or raw != owner.token:
+            raise HTTPException(status_code=401,
+                                detail="answers require the admin token or the token of "
+                                       "the principal who ran the query")
+        try:
+            demo.check_query_budget(q["principal"])
+        except DemoRefused as e:
+            raise HTTPException(status_code=e.status_code, detail=e.detail)
     if not rows:
         raise HTTPException(status_code=422,
                             detail="query has no retrieved passages to answer from")
